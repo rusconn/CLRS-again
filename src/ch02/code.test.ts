@@ -1,4 +1,4 @@
-import { addBinary, insertionSort, insertionSortDesc, linearSearch } from "./code";
+import { addBinary, insertionSort, insertionSortDesc, linearSearch, selectionSort } from "./code";
 
 describe("insertionSort", () => {
   const patterns = [
@@ -55,5 +55,20 @@ describe("addBinary", () => {
 
   test.each(patterns)("%j", ({ input: { A, B }, output }) => {
     expect(addBinary(A, B)).toEqual(output);
+  });
+});
+
+describe("selectionSort", () => {
+  const patterns = [
+    { input: [], output: [] },
+    { input: [1], output: [1] },
+    { input: [1, 2], output: [1, 2] },
+    { input: [2, 1], output: [1, 2] },
+    { input: [1, 3, 2], output: [1, 2, 3] },
+  ];
+
+  test.each(patterns)("%j", ({ input, output }) => {
+    selectionSort(input);
+    expect(input).toEqual(output);
   });
 });

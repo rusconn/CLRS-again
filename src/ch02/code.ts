@@ -1,3 +1,6 @@
+import { swap } from "@/data/array";
+
+/** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) */
 const isort = (cmp: (x: number, y: number) => boolean) => (A: number[]) => {
   // A[j..]を挿入していく、A[0..j-1]はソート済み
   for (let j = 1; j < A.length; j++) {
@@ -12,10 +15,13 @@ const isort = (cmp: (x: number, y: number) => boolean) => (A: number[]) => {
   }
 };
 
+/** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) */
 export const insertionSort = isort((x, y) => x < y);
 
+/** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) */
 export const insertionSortDesc = isort((x, y) => x > y);
 
+/** worst: Θ(n), best: O(1), average: Θ(n) */
 export const linearSearch = (A: readonly number[], v: typeof A[number]) => {
   for (let i = 0; i < A.length; i++) {
     if (A[i] === v) {
@@ -25,6 +31,7 @@ export const linearSearch = (A: readonly number[], v: typeof A[number]) => {
   return null;
 };
 
+/** worst: Θ(n), best: Θ(n), average: Θ(n) */
 export const addBinary = (A: readonly number[], B: readonly number[]) => {
   const C = Array<number>(A.length + 1);
   let carry = 0;
@@ -38,4 +45,19 @@ export const addBinary = (A: readonly number[], B: readonly number[]) => {
   C[0] = carry;
 
   return C;
+};
+
+/** worst: Θ(n^2), best: Θ(n^2), average: Θ(n^2) */
+export const selectionSort = (A: number[]) => {
+  for (let i = 0; i < A.length - 1; i++) {
+    let min = i;
+
+    for (let j = i + 1; j < A.length; j++) {
+      if (A[min] > A[j]) {
+        min = j;
+      }
+    }
+
+    swap(A, i, min);
+  }
 };
