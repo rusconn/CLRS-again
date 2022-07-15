@@ -61,3 +61,148 @@ export const selectionSort = (A: number[]) => {
     swap(A, i, min);
   }
 };
+
+/** worst: Θ(nlgn), best: Θ(nlgn), average: Θ(nlgn) */
+export const mergeSort = (A: number[], p = 0, r = A.length - 1) => {
+  if (p >= r) {
+    return;
+  }
+
+  const q = Math.floor((p + r) / 2);
+  mergeSort(A, p, q);
+  mergeSort(A, q + 1, r);
+  merge(A, p, q, r);
+};
+
+/** worst: Θ(n), best: Θ(n), average: Θ(n) (n=r-p) */
+const merge = (A: number[], p: number, q: number, r: number) => {
+  const [n1, n2] = [q - p + 1, r - q];
+  const [L, R] = [Array<number>(n1 + 1), Array<number>(n2 + 1)];
+
+  for (let i = 0; i < n1; i++) {
+    L[i] = A[p + i];
+  }
+  for (let j = 0; j < n2; j++) {
+    R[j] = A[q + 1 + j];
+  }
+
+  // 番兵
+  L[n1] = Infinity;
+  R[n2] = Infinity;
+
+  for (let i = 0, j = 0, k = p; k <= r; k++) {
+    A[k] = L[i] <= R[j] ? L[i++] : R[j++];
+  }
+};
+
+/** worst: Θ(nlgn), best: Θ(nlgn), average: Θ(nlgn) */
+export const mergeSortWithoutSentinel = (A: number[], p = 0, r = A.length - 1) => {
+  if (p >= r) {
+    return;
+  }
+
+  const q = Math.floor((p + r) / 2);
+  mergeSortWithoutSentinel(A, p, q);
+  mergeSortWithoutSentinel(A, q + 1, r);
+  mergeWithoutSentinel(A, p, q, r);
+};
+
+/** worst: Θ(n), best: Θ(n), average: Θ(n) (n=r-p) */
+const mergeWithoutSentinel = (A: number[], p: number, q: number, r: number) => {
+  const [n1, n2] = [q - p + 1, r - q];
+  const [L, R] = [Array<number>(n1), Array<number>(n2)];
+
+  for (let i = 0; i < n1; i++) {
+    L[i] = A[p + i];
+  }
+  for (let j = 0; j < n2; j++) {
+    R[j] = A[q + 1 + j];
+  }
+
+  for (let i = 0, j = 0, k = p; k <= r; k++) {
+    if (i === n1) {
+      A[k] = R[j++];
+    } else if (j === n2) {
+      A[k] = L[i++];
+    } else {
+      A[k] = L[i] <= R[j] ? L[i++] : R[j++];
+    }
+  }
+};
+
+/** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) */
+export const insertionSortRecursive = (A: number[], i = A.length - 1) => {
+  if (i < 1) {
+    return;
+  }
+
+  insertionSortRecursive(A, i - 1);
+
+  const key = A[i];
+
+  // keyをソート済みの列に挿入する
+  let j = i - 1;
+  while (j >= 0 && A[j] > key) {
+    A[j + 1] = A[j--];
+  }
+  A[j + 1] = key;
+};
+
+/** worst: Θ(lgn), best: O(1), average: Θ(lgn) */
+export const binarySearchIterative = (
+  A: readonly number[],
+  v: typeof A[number],
+  i = 0,
+  j = A.length - 1
+) => {
+  while (i <= j) {
+    const mid = Math.floor((i + j) / 2);
+
+    if (v === A[mid]) {
+      return mid;
+    }
+
+    if (v < A[mid]) {
+      j = mid - 1;
+    } else {
+      i = mid + 1;
+    }
+  }
+
+  return null;
+};
+
+/** worst: Θ(lgn), best: O(1), average: Θ(lgn) */
+export const binarySearchRecursive = (
+  A: readonly number[],
+  v: typeof A[number],
+  i = 0,
+  j = A.length - 1
+): number | null => {
+  if (i > j) {
+    return null;
+  }
+
+  const mid = Math.floor((i + j) / 2);
+
+  if (v === A[mid]) {
+    return mid;
+  }
+
+  return v < A[mid]
+    ? binarySearchRecursive(A, v, i, mid - 1)
+    : binarySearchRecursive(A, v, mid + 1, j);
+};
+
+/** worst: Θ(nlgn), best: Θ(nlgn), average: Θ(nlgn) */
+export const hasCouple = (S: number[], x: number) => {
+  mergeSort(S, 0, S.length - 1);
+
+  for (let i = 0; i < S.length - 1; i++) {
+    if (binarySearchIterative(S, x - S[i], i + 1, S.length - 1) !== null) {
+      return true;
+    }
+  }
+
+  return false;
+};
