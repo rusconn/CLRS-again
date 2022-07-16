@@ -214,3 +214,67 @@ $$
 $$
 
 と結論できる。
+
+## 2-4 反転
+
+> $A[1..n]$ を $n$ 個の相異なる数の配列とする。 $i < j$ かつ $A[i] > A[j]$ のとき、対 $(i,j)$ を $A$ の**反転**(inversion)と呼ぶ。
+
+### 2-4.a
+
+> 配列 $\langle 2,3,8,6,1 \rangle$ が含む $5$ 個の反転を列挙せよ。
+
+$(1,5),(2,5),(3,4),(3,5),(4,5)$
+
+### 2-4.b
+
+> 集合 $\lbrace 1,2,\ldots,n \rbrace$ から選択された要素を持つ配列の中で最も多くの反転を含むものを示せ。この配列が持つ反転数を求めよ。
+
+配列: $\langle n,n-1,\ldots,1 \rangle$
+
+反転数: $(n-1)+(n-2)+\ldots+1 = \frac{n(n-1)}{2}$
+
+### 2-4.c
+
+> 挿入ソートの実行時間と入力配列の反転数の関係を述べよ。答が正しいことを証明せよ。
+
+挿入ソートの内側のループは１回実行されると反転数が１つ減る。  
+ソート後の反転数が $0$ であることを考慮すると、内側のループの実行回数は反転数と一致する。  
+つまり、挿入ソートの実行時間は必ず反転数以上となる。
+
+### 2-4.d
+
+> $n$ 個の要素からなる任意の順列が含む反転数を最悪時に $\Theta(n\lg n)$ 時間で決定するアルゴリズムを与えよ。（**ヒント：** マージソートを変形せよ。）
+
+```pseudo
+COUNT-INVERSIONS(A):
+  if p < r
+    q = ⌊(p + r) / 2⌋
+    a = COUNT-INVERSIONS(A, p, q)
+    b = COUNT-INVERSIONS(A, q + 1, r)
+    return a + b + MERGE-INVERSIONS(A, p, q, r)
+```
+
+```pseudo
+MERGE-INVERSIONS(A, p, q, r):
+  n₁ = q - p + 1
+  n₂ = r - q
+  L[1..n₁+1] と R[1..n₂+1] を2つの新しい配列とする
+  for i = 1 to n₁
+    L[i] = A[p + i - 1]
+  for j = 1 to n₂
+    R[j] = A[q + j]
+  L[n₁ + 1] = ∞
+  R[n₂ + 1] = ∞
+  i = 1
+  j = 1
+  inversions = 0
+  for k = p to r
+    if L[i] <= R[j]
+      A[k] = L[i]
+      i = i + 1
+    else
+      A[k] = R[j]
+      j = j + 1
+      inversions = inversions + n1 - i + 1
+  return inversions
+```

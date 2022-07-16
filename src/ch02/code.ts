@@ -270,3 +270,45 @@ export const polynomial = (A: readonly number[], x: number) => {
   }
   return y;
 };
+
+/** worst: Θ(nlgn), best: Θ(nlgn), average: Θ(nlgn) */
+export const countInversions = (A: number[], p = 0, r = A.length - 1): number => {
+  if (p >= r) {
+    return 0;
+  }
+
+  const q = Math.floor((p + r) / 2);
+  const a = countInversions(A, p, q);
+  const b = countInversions(A, q + 1, r);
+  return a + b + mergeInversions(A, p, q, r);
+};
+
+/** worst: Θ(n), best: Θ(n), average: Θ(n) (n=r-p) */
+const mergeInversions = (A: number[], p: number, q: number, r: number) => {
+  const [n1, n2] = [q - p + 1, r - q];
+  const [L, R] = [Array<number>(n1 + 1), Array<number>(n2 + 1)];
+
+  for (let i = 0; i < n1; i++) {
+    L[i] = A[p + i];
+  }
+  for (let j = 0; j < n2; j++) {
+    R[j] = A[q + 1 + j];
+  }
+
+  // 番兵
+  L[n1] = Infinity;
+  R[n2] = Infinity;
+
+  let inversions = 0;
+
+  for (let i = 0, j = 0, k = p; k <= r; k++) {
+    if (L[i] <= R[j]) {
+      A[k] = L[i++];
+    } else {
+      A[k] = R[j++];
+      inversions += n1 - i;
+    }
+  }
+
+  return inversions;
+};

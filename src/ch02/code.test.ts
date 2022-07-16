@@ -3,6 +3,7 @@ import {
   binarySearchIterative,
   binarySearchRecursive,
   bubbleSort,
+  countInversions,
   hasCouple,
   horner,
   insertionSort,
@@ -231,5 +232,19 @@ describe("polynomial", () => {
 
   test.each(patterns)("%j", ({ input: { A, x }, output }) => {
     expect(polynomial(A, x)).toEqual(output);
+  });
+});
+
+describe("countInversions", () => {
+  const patterns = [
+    { input: [], output: 0 },
+    { input: [1], output: 0 },
+    { input: [1, 2], output: 0 },
+    { input: [2, 1], output: 1 },
+    { input: [2, 3, 8, 6, 1], output: 5 },
+  ];
+
+  test.each(patterns)("%j", ({ input, output }) => {
+    expect(countInversions(input)).toEqual(output);
   });
 });
