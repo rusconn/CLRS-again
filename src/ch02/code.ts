@@ -248,3 +248,25 @@ export const bubbleSort = (A: number[]) => {
     }
   }
 };
+
+/** Θ(n) */
+export const horner = (A: readonly number[], x: number) => {
+  let y = 0;
+  for (let i = A.length - 1; i >= 0; i--) {
+    y = A[i] + x * y;
+  }
+  return y;
+};
+
+/** Θ(n^2) */
+export const polynomial = (A: readonly number[], x: number) => {
+  let y = 0;
+  for (let i = 0; i < A.length; i++) {
+    let z = 1;
+    for (let j = 1; j <= i; j++) {
+      z *= x;
+    }
+    y += A[i] * z;
+  }
+  return y;
+};

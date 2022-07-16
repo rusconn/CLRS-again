@@ -4,6 +4,7 @@ import {
   binarySearchRecursive,
   bubbleSort,
   hasCouple,
+  horner,
   insertionSort,
   insertionSortDesc,
   insertionSortRecursive,
@@ -11,6 +12,7 @@ import {
   mergeSort,
   mergeSortModified,
   mergeSortWithoutSentinel,
+  polynomial,
   selectionSort,
 } from "./code";
 
@@ -201,5 +203,33 @@ describe("bubbleSort", () => {
   test.each(patterns)("%j", ({ input, output }) => {
     bubbleSort(input);
     expect(input).toEqual(output);
+  });
+});
+
+describe("horner", () => {
+  const patterns = [
+    { input: { A: [], x: 4 }, output: 0 },
+    { input: { A: [2], x: 4 }, output: 2 },
+    { input: { A: [2, 1], x: 3 }, output: 5 },
+    { input: { A: [2, 1], x: 0 }, output: 2 },
+    { input: { A: [2, 1, 3], x: 5 }, output: 82 },
+  ];
+
+  test.each(patterns)("%j", ({ input: { A, x }, output }) => {
+    expect(horner(A, x)).toEqual(output);
+  });
+});
+
+describe("polynomial", () => {
+  const patterns = [
+    { input: { A: [], x: 4 }, output: 0 },
+    { input: { A: [2], x: 4 }, output: 2 },
+    { input: { A: [2, 1], x: 3 }, output: 5 },
+    { input: { A: [2, 1], x: 0 }, output: 2 },
+    { input: { A: [2, 1, 3], x: 5 }, output: 82 },
+  ];
+
+  test.each(patterns)("%j", ({ input: { A, x }, output }) => {
+    expect(polynomial(A, x)).toEqual(output);
   });
 });
