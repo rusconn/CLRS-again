@@ -237,3 +237,14 @@ export const insertionSortForModify = (A: number[], p: number, r: number) => {
     A[i + 1] = key;
   }
 };
+
+/** worst: Θ(n^2), best: Θ(n^2), average: Θ(n^2) */
+export const bubbleSort = (A: number[]) => {
+  for (let i = 0; i < A.length - 1; i++) {
+    for (let j = A.length - 1; j >= i + 1; j--) {
+      if (A[j] < A[j - 1]) {
+        swap(A, j, j - 1);
+      }
+    }
+  }
+};

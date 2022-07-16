@@ -2,6 +2,7 @@ import {
   addBinary,
   binarySearchIterative,
   binarySearchRecursive,
+  bubbleSort,
   hasCouple,
   insertionSort,
   insertionSortDesc,
@@ -184,6 +185,21 @@ describe("mergeSortModified", () => {
 
   test.each(patterns)("%j", ({ input, output }) => {
     mergeSortModified(input);
+    expect(input).toEqual(output);
+  });
+});
+
+describe("bubbleSort", () => {
+  const patterns = [
+    { input: [], output: [] },
+    { input: [1], output: [1] },
+    { input: [1, 2], output: [1, 2] },
+    { input: [2, 1], output: [1, 2] },
+    { input: [1, 3, 2], output: [1, 2, 3] },
+  ];
+
+  test.each(patterns)("%j", ({ input, output }) => {
+    bubbleSort(input);
     expect(input).toEqual(output);
   });
 });
