@@ -206,3 +206,34 @@ export const hasCouple = (S: number[], x: number) => {
 
   return false;
 };
+
+/** worst: Θ(nlgn), best: Θ(nlgn), average: Θ(nlgn) */
+export const mergeSortModified = (A: number[], p = 0, r = A.length - 1) => {
+  if (p >= r) {
+    return;
+  }
+
+  // 閾値に根拠はない
+  if (r - p <= 64) {
+    insertionSortForModify(A, p, r);
+    return;
+  }
+
+  const q = Math.floor((p + r) / 2);
+  mergeSortModified(A, p, q);
+  mergeSortModified(A, q + 1, r);
+  mergeWithoutSentinel(A, p, q, r);
+};
+
+/** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) (n=r-p) */
+export const insertionSortForModify = (A: number[], p: number, r: number) => {
+  for (let j = p + 1; j <= r; j++) {
+    const key = A[j];
+
+    let i = j - 1;
+    while (i >= p && A[i] > key) {
+      A[i + 1] = A[i--];
+    }
+    A[i + 1] = key;
+  }
+};

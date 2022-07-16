@@ -8,6 +8,7 @@ import {
   insertionSortRecursive,
   linearSearch,
   mergeSort,
+  mergeSortModified,
   mergeSortWithoutSentinel,
   selectionSort,
 } from "./code";
@@ -169,5 +170,20 @@ describe("hasCouple", () => {
 
   test.each(patterns)("%j", ({ input: { S, x }, output }) => {
     expect(hasCouple(S, x)).toEqual(output);
+  });
+});
+
+describe("mergeSortModified", () => {
+  const patterns = [
+    { input: [], output: [] },
+    { input: [1], output: [1] },
+    { input: [1, 2], output: [1, 2] },
+    { input: [2, 1], output: [1, 2] },
+    { input: [1, 3, 2], output: [1, 2, 3] },
+  ];
+
+  test.each(patterns)("%j", ({ input, output }) => {
+    mergeSortModified(input);
+    expect(input).toEqual(output);
   });
 });
