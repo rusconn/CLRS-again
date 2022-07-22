@@ -4,3 +4,6 @@ export const swap = <T>(A: T[], i: number, j: number) => {
   A[i] = A[j];
   A[j] = tmp;
 };
+
+/** [0,1,...,count-1] */
+export const range = (count: number) => [...Array(count).keys()];
