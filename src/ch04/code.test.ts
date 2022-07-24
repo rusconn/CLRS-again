@@ -1,6 +1,9 @@
 import { range } from "@/data/array";
-import { randInts } from "@/util";
+import * as SMat from "@/data/matrix/square";
+import { randInt, randInts } from "@/util";
 import {
+  complexMul,
+  complexMulModify,
   maxDiffBruteForce,
   maxDiffSubarrayBruteForce,
   maxDiffKadane,
@@ -8,6 +11,10 @@ import {
   maxSubarrayDaC,
   maxSubarrayBruteForce,
   maxSubarrayKadane,
+  sMatMulIjk,
+  sMatMulDaC,
+  strassen,
+  sMatMulIkj,
 } from "./code";
 
 describe("maxSubarrayBruteForce", () => {
@@ -106,5 +113,121 @@ describe("maxDiffKadane", () => {
     const kadane = maxDiffKadane(input);
     const brute = maxDiffBruteForce(input);
     expect(kadane).toEqual(brute);
+  });
+});
+
+describe("sMatMulIjk", () => {
+  const patterns = [
+    { input: { A: [[0]], B: [[1]] }, output: [[0]] },
+    { input: { A: [[1]], B: [[0]] }, output: [[0]] },
+    { input: { A: [[1]], B: [[2]] }, output: [[2]] },
+    {
+      input: {
+        A: [
+          [1, 3],
+          [7, 5],
+        ],
+        B: [
+          [6, 8],
+          [4, 2],
+        ],
+      },
+      output: [
+        [18, 14],
+        [62, 66],
+      ],
+    },
+    {
+      input: {
+        A: [
+          [1, 3],
+          [7, 5],
+        ],
+        B: [
+          [6, 8],
+          [4, 2],
+        ],
+      },
+      output: [
+        [18, 14],
+        [62, 66],
+      ],
+    },
+  ];
+
+  test.each(patterns)("%j", ({ input: { A, B }, output }) => {
+    expect(sMatMulIjk(A, B)).toEqual(output);
+  });
+});
+
+describe("sMatMulIkj", () => {
+  const patterns = range(5).map(n => ({
+    input: {
+      A: SMat.createRand(2 ** n, 0, 10), // 0 と -0 は一致しないようなので 0以上としている
+      B: SMat.createRand(2 ** n, 0, 10),
+    },
+  }));
+
+  // 素朴なアルゴリズムと結果を比較する
+  test.each(patterns)("%j", ({ input: { A, B } }) => {
+    expect(sMatMulIkj(A, B)).toEqual(sMatMulIjk(A, B));
+  });
+});
+
+describe("sMatMulDaC", () => {
+  const patterns = range(5).map(n => ({
+    input: {
+      A: SMat.createRand(2 ** n, 0, 10),
+      B: SMat.createRand(2 ** n, 0, 10),
+    },
+  }));
+
+  // 素朴なアルゴリズムと結果を比較する
+  test.each(patterns)("%j", ({ input: { A, B } }) => {
+    expect(sMatMulDaC(A, B)).toEqual(sMatMulIjk(A, B));
+  });
+});
+
+describe("strassen", () => {
+  const patterns = range(5).map(n => ({
+    input: {
+      A: SMat.createRand(2 ** n, 0, 10),
+      B: SMat.createRand(2 ** n, 0, 10),
+    },
+  }));
+
+  // 素朴なアルゴリズムと結果を比較する
+  test.each(patterns)("%j", ({ input: { A, B } }) => {
+    expect(strassen(A, B)).toEqual(sMatMulIjk(A, B));
+  });
+});
+
+describe("complexMul", () => {
+  const patterns = [
+    { input: { a: 1, b: 0, c: 2, d: 0 }, output: [2, 0] },
+    { input: { a: 0, b: 1, c: 0, d: 2 }, output: [-2, 0] },
+    { input: { a: 1, b: 1, c: 0, d: 2 }, output: [-2, 2] },
+    { input: { a: 1, b: 1, c: 2, d: 2 }, output: [0, 4] },
+    { input: { a: 2, b: 3, c: 1, d: -1 }, output: [5, 1] },
+  ];
+
+  test.each(patterns)("%j", ({ input: { a, b, c, d }, output }) => {
+    expect(complexMul(a, b, c, d)).toEqual(output);
+  });
+});
+
+describe("complexMulModify", () => {
+  const patterns = range(5).map(_ => ({
+    input: {
+      a: randInt(0, 10), // 0 と -0 は一致しないようなので 0以上としている
+      b: randInt(0, 10),
+      c: randInt(0, 10),
+      d: randInt(0, 10),
+    },
+  }));
+
+  // 素朴なアルゴリズムと結果を比較する
+  test.each(patterns)("%j", ({ input: { a, b, c, d } }) => {
+    expect(complexMulModify(a, b, c, d)).toEqual(complexMul(a, b, c, d));
   });
 });

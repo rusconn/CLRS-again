@@ -65,3 +65,135 @@ FIND-MAXIMUM-SUBARRAY-ITERATIVE(A):
 ```
 
 Kadane's algorithm というらしい。
+
+## 4.2-1
+
+> 行列積
+>
+> $$
+>   \begin{pmatrix}
+>     1 & 3 \\
+>     7 & 5
+>   \end{pmatrix}
+>   \begin{pmatrix}
+>     6 & 8 \\
+>     4 & 2
+>   \end{pmatrix}
+> $$
+>
+> を Strassen のアルゴリズムを用いて計算せよ。計算過程を説明せよ。
+
+$$
+  A_{11} = \begin{pmatrix}1\end{pmatrix}, A_{12} = \begin{pmatrix}3\end{pmatrix}, A_{21} = \begin{pmatrix}7\end{pmatrix}, A_{22} = \begin{pmatrix}5\end{pmatrix} \\
+  B_{11} = \begin{pmatrix}6\end{pmatrix}, B_{12} = \begin{pmatrix}8\end{pmatrix}, B_{21} = \begin{pmatrix}4\end{pmatrix}, B_{22} = \begin{pmatrix}2\end{pmatrix}
+$$
+
+$$
+  \begin{align}
+    S_1 = B_{12} - B_{22} = \begin{pmatrix}6\end{pmatrix} \\
+    S_2 = A_{11} + A_{12} = \begin{pmatrix}4\end{pmatrix} \\
+    S_3 = A_{21} + A_{22} = \begin{pmatrix}12\end{pmatrix} \\
+    S_4 = B_{21} - B_{11} = \begin{pmatrix}-2\end{pmatrix} \\
+    S_5 = A_{11} + A_{22} = \begin{pmatrix}6\end{pmatrix} \\
+    S_6 = B_{11} + B_{22} = \begin{pmatrix}8\end{pmatrix} \\
+    S_7 = A_{12} - A_{22} = \begin{pmatrix}-2\end{pmatrix} \\
+    S_8 = B_{21} + B_{22} = \begin{pmatrix}6\end{pmatrix} \\
+    S_9 = A_{11} - A_{21} = \begin{pmatrix}-6\end{pmatrix} \\
+    S_{10} = B_{11} + B_{12} = \begin{pmatrix}14\end{pmatrix}
+  \end{align}
+$$
+
+$$
+  \begin{align}
+    P_1 = A_{11} \cdot S_1 = \begin{pmatrix}6\end{pmatrix} \\
+    P_2 = S_2 \cdot B_{22} = \begin{pmatrix}8\end{pmatrix} \\
+    P_3 = S_3 \cdot B_{11} = \begin{pmatrix}72\end{pmatrix} \\
+    P_4 = A_{22} \cdot S_4 = \begin{pmatrix}-10\end{pmatrix} \\
+    P_5 = S_5 \cdot S_6 = \begin{pmatrix}48\end{pmatrix} \\
+    P_6 = S_7 \cdot S_8 = \begin{pmatrix}-12\end{pmatrix} \\
+    P_7 = S_9 \cdot S_{10} = \begin{pmatrix}-84\end{pmatrix}
+  \end{align}
+$$
+
+$$
+  \begin{align}
+    C_{11} = P_5 + P_4 - P_2 + P_6 = \begin{pmatrix}18\end{pmatrix} \\
+    C_{12} = P_1 + P_2 = \begin{pmatrix}14\end{pmatrix} \\
+    C_{21} = P_3 + P_4 = \begin{pmatrix}62\end{pmatrix} \\
+    C_{22} = P_5 + P_1 - P_3 - P_7 = \begin{pmatrix}66\end{pmatrix}
+  \end{align}
+$$
+
+$$
+  \begin{pmatrix}
+    18 & 14 \\
+    62 & 66
+  \end{pmatrix}
+$$
+
+## 4.2-2
+
+> Strassen のアルゴリズムの擬似コードを書け。
+
+```pseudo
+STRASSEN(A, B):
+  n = A.rows
+  C を新しい n × n 型行列とする
+  if n == 1
+    c₁₁ = a₁₁・b₁₁
+  else
+    A, B, C を分割する
+    S₁ = B₁₂ - B₂₂
+    S₂ = A₁₁ + A₁₂
+    S₃ = A₂₁ + A₂₂
+    S₄ = B₂₁ - B₁₁
+    S₅ = A₁₁ + A₂₂
+    S₆ = B₁₁ + B₂₂
+    S₇ = A₁₂ - A₂₂
+    S₈ = B₂₁ + B₂₂
+    S₉ = A₁₁ - A₂₁
+    S₁₀ = B₁₁ + B₁₂
+    P₁ = STRASSEN(A₁₁, S₁)
+    P₂ = STRASSEN(S₂, B₁₁)
+    P₃ = STRASSEN(S₃, B₁₁)
+    P₄ = STRASSEN(A₁₁, S₄)
+    P₅ = STRASSEN(S₅, S₆)
+    P₆ = STRASSEN(S₇, S₈)
+    P₇ = STRASSEN(S₉, S₁₀)
+    C₁₁ = P₅ + P₄ - P₂ + P₆
+    C₁₂ = P₁ + P₂
+    C₂₁ = P₃ + P₄
+    C₂₂ = P₅ + P₁ - P₃ - P₇
+  return C
+```
+
+## 4.2-3 (第 4.5 節の後で解くことを推奨)
+
+> $n$ が２のベキでないときにも正しく働くように $n \times n$ 型行列の積を計算する Strassen のアルゴリズムを変更せよ。変更を加えたアルゴリズムが $\Theta(n^{\lg 7})$ 時間で実行できることを示せ。
+
+## 4.2-4 (第 4.5 節の後で解くことを推奨)
+
+> $3 \times 3$ 型行列の乗算が $k$ 回の乗算（乗算の可換性は仮定しない）によって実現できることから、 $n \times n$ 型行列の乗算が $n^{\lg 7}$ 時間で計算できることが帰結できる最大の $k$ を求めよ。このアルゴリズムの実行時間を求めよ。
+
+## 4.2-5 (第 4.5 節の後で解くことを推奨)
+
+> V.Pan（パン）は $68 \times 68$ 型行列を $123,464$ 回の乗算を用いて行う方法、 $70 \times 70$ 型行列を $143,640$ 回の乗算を用いて行う方法、 $72 \times 72$ 型行列を $155,424$ 回の乗算を用いて行う方法を発見した。それぞれを分割統治行列積アルゴリズムの中で用いるとき、どの方法が最良の漸近的実行時間を実現するか。最良のものを Strassen のアルゴリズムと比較せよ。
+
+## 4.2-6
+
+> Strassen のアルゴリズムをサブルーチンに用いて $kn \times n$ 型行列と $n \times kn$ 型行列の積を計算するアルゴリズムの実行時間を解析せよ。入力行列の順序を逆にするとき、同じ質問に答えよ。
+
+？
+
+## 4.2-7
+
+> ３回の実数乗算を用いて複素数 $a + bi$ と $c + di$ の積が計算できることを示せ。アルゴリズムは入力として $a,b,c,d$ を取り、実数部 $ac - bd$ と虚数部 $ad + bc$ を別々に出力しなければならない。
+
+$$
+  \begin{align}
+    A = a \times c = ac \\
+    B = b \times d = bd \\
+    C = (a + b)\times(c + d) = ac + ad + bc + bd \\
+    (A - B) + (C - A - B)i
+  \end{align}
+$$

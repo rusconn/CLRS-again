@@ -117,4 +117,173 @@ $$
 
 分割統治法を用いることで総当り法に基づくよりも漸近的に高速なアルゴリズムを設計できた。
 
+## 4.2 行列積のための Strassen のアルゴリズム
+
+$A = \begin{pmatrix} a_{ij} \end{pmatrix}$ と $B = \begin{pmatrix}b_{ij}\end{pmatrix}$ が共に $n \times n$ 型の正方行列のとき、積を $C = A \cdot B$ とすると、すべての $i,j = 1,2,\ldots,n$ に対してその要素 $c_{ij}$ は
+
+$$
+  c_{ij} = \sum_{k=1}^{n}a_{ik}\cdot b_{kj}
+$$
+
+と定義される。
+
+以下に示す手続きは２つの $n \times n$ 型行列 $A$ と $B$ を入力として取り、これらの積である $n \times n$ 型行列 $C$ を返す。
+
+```pseudo
+SQUARE-MATRIX-MULTIPLY(A, B):
+  n = A.rows
+  C を新しい n × n 型行列とする
+  for i = 1 to n
+    for j = 1 to n
+      cᵢⱼ = 0
+      for k = 1 to n
+        cᵢⱼ = cᵢⱼ + aᵢₖ・bₖⱼ
+  return C
+```
+
+この手続きの実行時間は $\Theta(n^3)$ である。
+
+行列積の自然な定義が $\Omega(n^3)$ 回の（スカラー）積を含んでいるので、  
+行列積を計算する任意のアルゴリズムの実行時間も $\Omega(n^3)$ であると考えるかもしれない。  
+しかし、この直観は間違っている。
+
+### 単純な分割統治アルゴリズム
+
+$n$ を２の完全なベキであると仮定する。 $A, B, C$ をぞれぞれ４つの $n/2 \times n/2$ 型行列
+
+$$
+  A = \begin{pmatrix}
+    A_{11} & A_{12} \\
+    A_{21} & A_{22}
+  \end{pmatrix}
+  \quad
+  B = \begin{pmatrix}
+    B_{11} & B_{12} \\
+    B_{21} & B_{22}
+  \end{pmatrix}
+  \quad
+  C = \begin{pmatrix}
+    C_{11} & C_{12} \\
+    C_{21} & C_{22}
+  \end{pmatrix}
+$$
+
+に分割し、式 $C = A \cdot B$ を
+
+$$
+  \begin{pmatrix}
+    C_{11} & C_{12} \\
+    C_{21} & C_{22}
+  \end{pmatrix} = \begin{pmatrix}
+    A_{11} & A_{12} \\
+    A_{21} & A_{22}
+  \end{pmatrix} \cdot \begin{pmatrix}
+    B_{11} & B_{12} \\
+    B_{21} & B_{22}
+  \end{pmatrix}
+$$
+
+と書き直す。ここで、
+
+$$
+  \begin{align}
+    C_{11} = A_{11} \cdot B_{11} + A_{12} \cdot B_{21} \\
+    C_{12} = A_{11} \cdot B_{12} + A_{12} \cdot B_{22} \\
+    C_{21} = A_{21} \cdot B_{11} + A_{22} \cdot B_{21} \\
+    C_{22} = A_{21} \cdot B_{12} + A_{22} \cdot B_{22}
+  \end{align}
+$$
+
+が成り立つ。これらの４つの式はそれぞれ２つの $n/2 \times n/2$ 型行列の乗算とその結果の加算を含む。  
+これらの式を用いて単純で再帰的な分割統治アルゴリズムを設計できる。
+
+```pseudo
+SQUARE-MATRIX-MULTIPLY-RECURSIVE(A, B):
+  n = A.rows
+  C を新しい n × n 型行列とする
+  if n == 1
+    c₁₁ = a₁₁・b₁₁
+  else
+    A, B, C を分割する
+    C₁₁ = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₁₁, B₁₁) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₁₂, B₂₁)
+    C₁₂ = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₁₁, B₁₂) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₁₂, B₂₂)
+    C₂₁ = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₂₁, B₁₁) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₂₂, B₂₁)
+    C₂₂ = SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₂₁, B₁₂) + SQUARE-MATRIX-MULTIPLY-RECURSIVE(A₂₂, B₂₂)
+  return C
+```
+
+問題の分割には添字計算を用いる場合は $\Theta(1)$ 、コピーする場合には $\Theta(n^2)$ かかる。  
+サイズ $n/2$ の部分問題が８つ、結合には $\Theta(n^2)$ かかるので、 この手続きの実行時間 $T(n)$ を記述する漸化式
+
+$$
+  T(n) = \begin{cases}
+    \Theta(1) & n = 1 \\
+    8T(n/2) + \Theta(n^2) & n > 1
+  \end{cases}
+$$
+
+を得る。第 4.5 節で紹介するマスター法を用いると、この漸化式の解は $T(n) = \Theta(n^3)$ である。  
+したがって、この単純な分割統治手続きでは素朴な`SQUARE-MATRIX-MULTIPLY`を凌げない。
+
+### Strassen の方法
+
+Strassen の方法を用いると、再帰木の辺数を７に減らすことができる。  
+Strassen の方法は４ステップから構成されている。
+
+1. 入力行列 $A, B$ と出力行列 $C$ を $n/2 \times n/2$ 型部分行列に分解する。
+
+1. 10 個の $n/2 \times n/2$ 型行列 $S_1,S_2,\ldots,S_{10}$ を生成する。
+
+1. 第１ステップで生成された行列と第２ステップで生成された 10 個の行列を用いて、７個の行列積 $P_1,P_2,\ldots,P_7$ 再帰的に計算する。
+
+1. 様々な $P_i$ 行列の加減演算を用いて結果となる行列 $C$ の部分行列 $C_{11},C_{12},C_{21},C_{22}$ を計算する。
+
+$$
+  \begin{align}
+    S_1 = B_{12} - B_{22} \\
+    S_2 = A_{11} + A_{12} \\
+    S_3 = A_{21} + A_{22} \\
+    S_4 = B_{21} - B_{11} \\
+    S_5 = A_{11} + A_{22} \\
+    S_6 = B_{11} + B_{22} \\
+    S_7 = A_{12} - A_{22} \\
+    S_8 = B_{21} + B_{22} \\
+    S_9 = A_{11} - A_{21} \\
+    S_{10} = B_{11} + B_{12}
+  \end{align}
+$$
+
+$$
+  \begin{align}
+    P_1 = A_{11} \cdot S_1 \\
+    P_2 = S_2 \cdot B_{22} \\
+    P_3 = S_3 \cdot B_{11} \\
+    P_4 = A_{22} \cdot S_4 \\
+    P_5 = S_5 \cdot S_6 \\
+    P_6 = S_7 \cdot S_8 \\
+    P_7 = S_9 \cdot S_{10}
+  \end{align}
+$$
+
+$$
+  \begin{align}
+    C_{11} = P_5 + P_4 - P_2 + P_6 \\
+    C_{12} = P_1 + P_2 \\
+    C_{21} = P_3 + P_4 \\
+    C_{22} = P_5 + P_1 - P_3 - P_7
+  \end{align}
+$$
+
+Strassen の方法の実行時間 $T(n)$ を記述する漸化式は
+
+$$
+  T(n) = \begin{cases}
+    \Theta(1) & n = 1 \\
+    7T(n/2) + \Theta(n^2) & n > 1
+  \end{cases}
+$$
+
+となる。第 4.5 節で説明するマスター法を用いると、この漸化式の解は  
+$T(n) = \Theta(n^{\lg 7})$ であり、単純な分割統治アルゴリズムよりも漸近的に高速である。
+
 [← 前へ](../ch03/note.md)
