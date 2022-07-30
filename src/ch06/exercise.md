@@ -59,3 +59,77 @@ max ヒープは根に最大要素を持つ。
 > 要素数が $n$ のヒープが格納されている配列において、葉は添字が $\lfloor n/2 \rfloor + 1, \lfloor n/2 \rfloor + 2, \ldots,n$ の節点であることを示せ。
 
 ？
+
+## 6.2-1
+
+> 配列 $A = \langle 27,17,3,16,13,10,1,5,7,12,4,8,9,0 \rangle$ 上での`MAX-HEAPIFY(A,3)`の動作を示せ。
+
+$\langle 27,17,\textbf{3},16,13,\textbf{10},1,5,7,12,4,8,9,0 \rangle$  
+$\langle 27,17,\textbf{10},16,13,\textbf{3},1,5,7,12,4,8,9,0 \rangle$  
+$\langle 27,17,10,16,13,\textbf{3},1,5,7,12,4,8,\textbf{9},0 \rangle$  
+$\langle 27,17,10,16,13,\textbf{9},1,5,7,12,4,8,\textbf{3},0 \rangle$
+
+## 6.2-2
+
+> 手続き`MAX-HEAPIFY`を利用して、min ヒープ上で`MAX-HEAPIFY`に対応する操作を実現する手続き`MIN-HEAPIFY(A,i)`の擬似コードを書け。`MIN-HEAPIFY`の実行時間を`MAX-HEAPIFY`と比較せよ。
+
+```pseudo
+MIN-HEAPIFY(A, i)
+  l = LEFT(i)
+  r = RIGHT(i)
+  if l <= A.heap-size かつ A[l] < A[i]
+    smallest = l
+  else
+    smallest = i
+  if r <= A.heap-size かつ A[r] < A[smallest]
+    smallest = r
+  if smallest != i
+    A[i] を A[smallest] と交換する
+    MIN-HEAPIFY(A, smallest)
+```
+
+実行時間は`MAX-HEAPIFY`と同じ。
+
+## 6.2-3
+
+> 要素 $A[i]$ が左右両方の子より大きいとき、呼出し`MAX-HEAPIFY(A,i)`が与える影響を述べよ。
+
+何も影響が無い。
+（子への滑り落としが発生しない。）
+
+## 6.2-4
+
+> $i > A.\textit{heap-size}/2$ のとき、呼出し`MAX-HEAPIFY(A,i)`が与える影響を述べよ。
+
+何も影響が無い。  
+（滑り落とし先である子が無い。）
+
+## 6.2-5
+
+> `MAX-HEAPIFY`のコードは再帰呼出しを除けば極めて小さい定数係数を持つ。しかし、あるコンパイラは再帰呼出しを効率の悪いコードに変換するかもしれない。再帰呼出しの代わりに繰返し構造子（ループ）を用いる効率の良い`MAX-HEAPIFY`のコードを書け。
+
+```pseudo
+MAX-HEAPIFY-ITERATIVE(A, i):
+  while true
+    l = LEFT(i)
+    r = RIGHT(i)
+    if l <= A.heap-size かつ A[l] > A[i]
+      largest = l
+    else
+      largest = i
+    if r <= A.heap-size かつ A[r] > A[largest]
+      largest = r
+    if largest != i
+      A[i] を A[largest] と交換する
+      i = largest
+    else
+      return
+```
+
+## 6.2-6
+
+> サイズ $n$ のヒープ上の`MAX-HEAPIFY`の最悪実行時間が $\Omega(\lg n)$ であることを示せ。(**ヒント:** $n$ 節点からなるヒープに対して、根から葉に下る道上のすべての節点で`MAX-HEAPIFY`が再帰的に呼び出されるように節点の値を定めよ。)
+
+根に最小要素があり、すべての節点で右の子より左の子が大きいようなサイズ $n$ のヒープ $A$ を想定する。  
+$A$ に対して`MAX-HEAPIFY(A, 1)`を呼び出すと、ヒープの高さである $\Theta(\lg n)$ 回だけ  
+`MAX-HEAPIFY`が再帰的に呼び出されることになるので、最悪実行時間は $\Omega(\lg n)$ となる。
