@@ -84,4 +84,23 @@ $⌊A.length / 2⌋$ は子を持つ節点の最大の添字。
 `MAX-HEAPIFY`の実行時間はその節点の高さに依存するので、 $n$ が固定ではない。  
 計算は省略するが、`BUILD-MAX-HEAP`の実行時間は $O(n)$ となる。
 
+## 6.4 ヒープソートアルゴリズム
+
+これまでの手続きを使ってソートアルゴリズムを作れる。
+
+```pseudo
+HEAPSORT(A):
+  BUILD-MAX-HEAP(A)
+  for i = A.length downto 2
+    A[1] を A[i] と交換する
+    A.heap-size = A.heap-size - 1
+    MAX-HEAPIFY(A, 1)
+```
+
+max ヒープの根は全体の最大要素なので、ソート後に位置すべき場所である配列の末尾へ移動する。  
+移動した後、ヒープを縮小して max ヒープを維持しながら残りの内の最大要素を同様に移動していく。
+
+$O(n)$ かかる`BUILD-MAX-HEAP`を１回、 $O(\lg n)$ かかる`MAX-HEAPIFY`を $n-1$ 回呼び出すので、  
+`HEAPSORT`の実行時間は $O(n\lg n)$ となる。
+
 [← 前へ](../ch04/note.md)

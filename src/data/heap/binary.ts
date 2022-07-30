@@ -35,6 +35,27 @@ export class BinaryHeap<T> {
   }
 
   /**
+   * ヒープからソート済みの配列を得る。**ヒープは空になる**
+   *
+   * O(nlgn)
+   */
+  intoSortedArray() {
+    let heapSize = this.size();
+
+    for (let i = heapSize - 1; i >= 1; i--) {
+      swap(this.heap, 0, i);
+      heapSize -= 1;
+      this.downHeap(this.heap, 0, heapSize);
+    }
+
+    const array = this.heap;
+
+    this.heap = [];
+
+    return array;
+  }
+
+  /**
    * Aをヒープにする。
    *
    * O(n)
