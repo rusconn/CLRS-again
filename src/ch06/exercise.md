@@ -133,3 +133,29 @@ MAX-HEAPIFY-ITERATIVE(A, i):
 根に最小要素があり、すべての節点で右の子より左の子が大きいようなサイズ $n$ のヒープ $A$ を想定する。  
 $A$ に対して`MAX-HEAPIFY(A, 1)`を呼び出すと、ヒープの高さである $\Theta(\lg n)$ 回だけ  
 `MAX-HEAPIFY`が再帰的に呼び出されることになるので、最悪実行時間は $\Omega(\lg n)$ となる。
+
+## 6.3-1
+
+> 配列 $A = \langle 5,3,17,10,84,19,6,22,9 \rangle$ 上の`BUILD-MAX-HEAP`の動作を示せ。
+
+$\langle 5,3,17,\textbf{10},84,19,6,22,9 \rangle$  
+$\langle 5,3,17,\textbf{22},84,19,6,\textbf{10},9 \rangle$  
+$\langle 5,3,\textbf{17},22,84,19,6,10,9 \rangle$  
+$\langle 5,3,\textbf{19},22,84,\textbf{17},6,10,9 \rangle$  
+$\langle 5,\textbf{3},19,22,84,17,6,10,9 \rangle$  
+$\langle 5,\textbf{84},19,22,\textbf{3},17,6,10,9 \rangle$  
+$\langle \textbf{5},84,19,22,3,17,6,10,9 \rangle$
+$\langle \textbf{84},\textbf{22},19,\textbf{10},3,17,6,\textbf{5},9 \rangle$
+
+## 6.3-2
+
+> `BUILD-MAX-HEAP`のループ制御変数 $i$ の値を $1$ から $\lfloor A.length/2 \rfloor$ まで増やすのではなく、 $\lfloor A.length/2 \rfloor$ から $1$ まで減らしている。その理由を考えよ。
+
+`MAX-HEAPIFY`が、左右の子に max ヒープであることを要請するため。  
+もし $i$ を増やす方法をとると、結果が max ヒープにならない可能性がある。
+
+## 6.3-3
+
+> $n$ 個の要素を持つ任意のヒープには、高さ $h$ の節点は高々 $\lceil n/2^{h+1} \rceil$ 個しかないことを示せ。
+
+？

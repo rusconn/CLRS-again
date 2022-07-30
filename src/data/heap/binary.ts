@@ -9,9 +9,11 @@ export class BinaryHeap<T> {
    * O(n)
    *
    * @param cmp ヒープ条件維持に使う比較関数
+   * @param data ヒープの初期データ。デフォルトは空。**破壊される**
    */
-  constructor(private cmp: (x: T, y: T) => boolean) {
-    this.heap = [];
+  constructor(private cmp: (x: T, y: T) => boolean, data: T[] = []) {
+    this.buildHeap(data);
+    this.heap = data;
   }
 
   /**
@@ -30,6 +32,19 @@ export class BinaryHeap<T> {
    */
   empty() {
     return this.size() === 0;
+  }
+
+  /**
+   * Aをヒープにする。
+   *
+   * O(n)
+   *
+   * @param A ヒープにしたい対象
+   */
+  private buildHeap(A: T[]) {
+    for (let i = Math.floor(A.length / 2) - 1; i >= 0; i--) {
+      this.downHeap(A, i);
+    }
   }
 
   /**
