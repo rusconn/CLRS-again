@@ -103,4 +103,65 @@ max ヒープの根は全体の最大要素なので、ソート後に位置す�
 $O(n)$ かかる`BUILD-MAX-HEAP`を１回、 $O(\lg n)$ かかる`MAX-HEAPIFY`を $n-1$ 回呼び出すので、  
 `HEAPSORT`の実行時間は $O(n\lg n)$ となる。
 
+## 6.5 優先度付きキュー
+
+ヒープデータ構造を使うと効率的な優先度付きキューを実現できる。  
+本節では max ヒープに基づく max 優先度付きキューの実現に焦点を合わせる。
+
+**優先度付きキュー**(priority queue)は**キー**(key)と呼ぶ値を持つ要素の集合 $S$ を管理するためのデータ構造。  
+**max 優先度付きキュー**(max-priority queue)では次の操作が利用できる。
+
+$\text{INSERT}(S,x)$ : 集合 $S$ に要素 $x$ を挿入する。  
+$\text{MAXIMUM}(S)$ : 最大のキーを持つ要素を返す。  
+$\text{EXTRACT-MAX}(S)$ : $S$ から最大のキーを持つ要素を削除して返す。  
+$\text{INCREASE-KEY}(S,x,k)$ : 要素 $x$ のキーの値を新しいキーの値 $k(\ge x)$ に変更する
+
+まず $\text{MAXIMUM}$ を $O(1)$ で実現する。
+
+```pseudo
+HEAP-MAXIMUM(A):
+  return A[1]
+```
+
+次に $\text{EXTRACT-MAX}$ を $O(\lg n)$ を実現する。  
+この手続きは`HEAPSORT`の**for 文**の中身に似ている。
+
+```pseudo
+HEAP-EXTRACT-MAX(A):
+  if A.heap-size < 1
+    error "ヒープアンダーフロー"
+  max = A[1]
+  A[1] = A[A.heap-size]
+  A.heap-size = A.heap-size - 1
+  MAX-HEAPIFY(A, 1)
+  return max
+```
+
+$\text{INCREASE-KEY}$ の実現はこう。  
+挿入ソートを想起させる方法で要素を適切な位置へ移動する。  
+高々ヒープの高さ分しか移動しないから、 $O(\lg n)$ 。
+
+```pseudo
+HEAP-INCREASE-KEY(A, i, key):
+  if key < A[i]
+    error "新しいキーは現在のキーより小さい"
+  A[i] = key
+  while i > 1 かつ A[PARENT(i)] < A[i]
+    A[i] を A[PARENT(i)] と交換する
+    i = PARENT(i)
+```
+
+$\text{INSERT}$ の実現。  
+ヒープを拡張して新しい要素を入れ、適切な位置へ移動する。  
+ヒープの拡張が定数時間でできるなら、 $O(\lg n)$ 。
+
+```pseudo
+MAX-HEAP-INSERT(A, key):
+  A.heap-size = A.heap-size + 1
+  A[A.heap-size] = -∞
+  HEAP-INCREASE-KEY(A, A.heap-size, key)
+```
+
+以上をまとめると、ヒープを用いればサイズ $n$ の集合上の優先度付きキューの任意の操作を $O(\lg n)$ で実行できる。
+
 [← 前へ](../ch04/note.md)

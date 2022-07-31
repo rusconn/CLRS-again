@@ -200,3 +200,137 @@ $\langle 2,4,5,7,8,13,17,20,25 \rangle$
 > すべての要素が異なるとき、`HEAPSORT`の最良実行時間が $\Omega(n\lg n)$ であることを示せ。
 
 ？
+
+## 6.5-1
+
+> ヒープ $A = \langle 15,13,9,5,12,8,7,4,0,6,2,1 \rangle$ 上での $\text{HEAP-EXTRACT-MAX}$ の動作を示せ。
+
+$\langle 15,13,9,5,12,8,7,4,0,6,2,1 \rangle$
+$\langle \textbf{1},13,9,5,12,8,7,4,0,6,2 \rangle$
+$\langle \textbf{13},\textbf{1},9,5,12,8,7,4,0,6,2 \rangle$
+$\langle 13,\textbf{12},9,5,\textbf{1},8,7,4,0,6,2 \rangle$
+$\langle 13,12,9,5,\textbf{6},8,7,4,0,\textbf{1},2 \rangle$
+
+## 6.5-2
+
+> ヒープ $A = \langle 15,13,9,5,12,8,7,4,0,6,2,1 \rangle$ 上での $\text{MAX-HEAP-INSERT(A, 10)}$ の動作を示せ。
+
+$\langle 15,13,9,5,12,8,7,4,0,6,2,1 \rangle$
+$\langle 15,13,9,5,12,8,7,4,0,6,2,1,-\infty \rangle$
+$\langle 15,13,9,5,12,8,7,4,0,6,2,1,\textbf{10} \rangle$
+$\langle 15,13,9,5,12,\textbf{10},7,4,0,6,2,1,\textbf{8} \rangle$
+$\langle 15,13,\textbf{10},5,12,\textbf{9},7,4,0,6,2,1,8 \rangle$
+
+## 6.5-3
+
+> min ヒープを用いて min 優先度付きキューを実現する手続き $\text{HEAP-MINIMUM}$ 、 $\text{HEAP-EXTRACT-MIN}$ 、 $\text{HEAP-DECREASE-KEY}$ 、 $\text{MIN-HEAP-INSERT}$ の擬似コードを書け。
+
+```pseudo
+HEAP-MINIMUM(A):
+  return A[1]
+```
+
+```pseudo
+HEAP-EXTRACT-MIN(A):
+  if A.heap-size < 1
+    error "ヒープアンダーフロー"
+  min = A[1]
+  A[1] = A[A.heap-size]
+  A.heap-size = A.heap-size - 1
+  MIN-HEAPIFY(A, 1)
+  return min
+```
+
+```pseudo
+HEAP-DECREASE-KEY(A, i, key):
+  if key > A[i]
+    error "新しいキーは現在のキーより大きい"
+  A[i] = key
+  while i > 1 かつ A[PARENT(i)] > A[i]
+    A[i] を A[PARENT(i)] と交換する
+    i = PARENT(i)
+```
+
+```pseudo
+MIN-HEAP-INSERT(A, key):
+  A.heap-size = A.heap-size + 1
+  A[A.heap-size] = ∞
+  HEAP-DECREASE-KEY(A, A.heap-size, key)
+```
+
+## 6.5-4
+
+> $\text{MAX-HEAP-INSERT}$ において、キー値を正しく設定する前にわざわざ第２行でその値を一度 $-\infty$ に設定するのはなぜか？
+
+$\text{HEAP-INCREASE-KEY}$ のキー値チェックに違反しないようにするため。
+
+## 6.5-5
+
+> 次のループ不変式を用いて $\text{HEAP-INCREASE-KEY}$ の正当性を論ぜよ。
+>
+> 第４〜６行の**while**文の各繰返しの直前において、不等式 $A[\text{PARENT}(i)] \ge A[\text{LEFT(i)}]$ および $A[\text{PARENT(i)}] \ge A[\text{RIGHT(i)}]$ が（これらの節点が存在すれば）成立し、配列 $A[1..A.\text{heap-size}]$ は、 $A[i]$ が $A[\text{PARENT(i)}]$ より大きい可能性があることを除けば max ヒープ条件を満足する。
+>
+> $\text{HEAP-INCREASE-KEY}$ を呼び出したとき、部分配列 $A[1..A.\text{heap-size}]$ が max ヒープ条件を満たしていると仮定してもよい。
+
+省略
+
+## 6.5-6
+
+> $\text{HEAP-INCREASE-KEY}$ の第５行の交換操作には通常３回の代入が必要である。 $\text{INSERTION-SORT}$ の内側のループのアイデアを用いると、３回の代入を１回の代入で済ますことができることを示せ。
+
+３回
+
+```pseudo
+HEAP-INCREASE-KEY(A, i, key):
+  if key < A[i]
+    error "新しいキーは現在のキーより小さい"
+  A[i] = key
+  while i > 1 かつ A[PARENT(i)] < A[i]
+    tmp = A[i]
+    A[i] = A[PARENT(i)]
+    A[PARENT(i)] = tmp
+    i = PARENT(i)
+```
+
+１回
+
+```pseudo
+HEAP-INCREASE-KEY(A, i, key):
+  if key < A[i]
+    error "新しいキーは現在のキーより小さい"
+  while i > 1 かつ A[PARENT(i)] < key
+    A[i] = A[PARENT(i)]
+    i = PARENT(i)
+  A[i] = key
+```
+
+## 6.5-7
+
+> 優先度付きキューを用いて先入れ先出しキューを実現する方法を示せ。また、スタックを優先度付きキューで実現する方法を示せ。（キューとスタックは第 $10.1$ 節で定義する。）
+
+キュー: 要素を挿入するたびに要素の優先度を下げていく  
+スタック: 要素を挿入するたびに要素の優先度を上げていく
+
+## 6.5-8
+
+> $\text{HEAP-DELETE}(A, i)$ 操作はヒープ $A$ から節点 $i$ のアイテムを削除する。要素数 $n$ の max ヒープ上で $O(\lg n)$ 時間で動作するように $\text{HEAP-DELETE}$ を実現せよ。
+
+ヒープの最終要素と交換してサイズを減らす方針で出来る。  
+元最終要素くんを新天地にて"滑り落とす"か"浮上させる"必要がある。
+
+```pseudo
+HEAP-DELETE(A, i):
+  if A[i] > A[A.heap-size]
+    A[i] = A[A.heap-size]
+    A.heap-size = A.heap-size - 1
+    MAX-HEAPIFY(A, i)
+  else
+    HEAP-INCREASE-KEY(A, i, A[A.heap-size])
+    A.heap-size = A.heap-size - 1
+```
+
+## 6.5-9
+
+> $k$ 個のソートされたリストを１つのソートされたリストにマージするための $O(n\lg k)$ 時間アルゴリズムを与えよ。ただし、 $n$ は入力リストに含まれる総要素数である。（**ヒント:** $k$ 列のマージに min ヒープを用いよ。）
+
+？

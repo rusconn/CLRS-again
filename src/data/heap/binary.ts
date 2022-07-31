@@ -56,6 +56,93 @@ export class BinaryHeap<T> {
   }
 
   /**
+   * 最大優先度の要素を返す。
+   *
+   * O(1)
+   */
+  peek() {
+    return this.heap.at(0);
+  }
+
+  /**
+   * 最大優先度の要素をヒープから削除して返す。
+   *
+   * O(lgn)
+   */
+  pop() {
+    if (this.empty()) {
+      throw new RangeError("heap underflow.");
+    }
+
+    swap(this.heap, 0, this.size() - 1);
+
+    const most = this.heap.pop();
+
+    this.downHeap(this.heap, 0);
+
+    return most;
+  }
+
+  /**
+   * ヒープに要素を追加する。
+   *
+   * O(lgn)
+   *
+   * @param key 追加する要素
+   */
+  push(key: T) {
+    this.heap.push(key);
+    this.upHeap(this.heap, this.size() - 1);
+  }
+
+  /**
+   * ヒープから要素を削除する。
+   *
+   * O(lgn)
+   *
+   * @param i 削除する要素の添字
+   */
+  remove(i: number) {
+    // 最終要素の削除 or 唯一要素の削除
+    if (this.size() - 1 === i || (this.size() === 1 && i === 0)) {
+      this.heap.pop();
+      return;
+    }
+
+    if (this.heap.at(i) === undefined) {
+      throw new Error("not exist.");
+    }
+
+    const last = this.heap.pop() as T;
+
+    this.update(i, last);
+  }
+
+  /**
+   * 指定した要素の優先度を変更する。
+   *
+   * O(lgn)
+   *
+   * @param i 優先度を変更する要素の添字
+   * @param key 新しい優先度
+   */
+  update(i: number, key: T) {
+    const oldKey = this.heap.at(i);
+
+    if (oldKey === undefined) {
+      throw new Error("not exist.");
+    }
+
+    this.heap[i] = key;
+
+    if (this.cmp(oldKey, key)) {
+      this.downHeap(this.heap, i);
+    } else {
+      this.upHeap(this.heap, i);
+    }
+  }
+
+  /**
    * Aをヒープにする。
    *
    * O(n)
@@ -98,6 +185,25 @@ export class BinaryHeap<T> {
         i = most;
       }
     }
+  }
+
+  /**
+   * A[i] を ヒープ条件における適切な位置へ"浮上させる"。
+   *
+   * O(lgn)
+   *
+   * @param A ヒープ
+   * @param i 浮上させる要素の添字
+   */
+  private upHeap(A: T[], i: number) {
+    const key = A[i];
+
+    while (i > 0 && !this.cmp(A[BinaryHeap.parent(i)], key)) {
+      A[i] = A[BinaryHeap.parent(i)];
+      i = BinaryHeap.parent(i);
+    }
+
+    A[i] = key;
   }
 
   /** O(1) */
