@@ -10,7 +10,7 @@ import {
   selectionSort,
 } from "@/ch02/code";
 import { heapSort } from "@/ch06/code";
-import { quickSort } from "@/ch07/code";
+import { quickSort, randomizedQuickSort } from "@/ch07/code";
 
 for (const size of range(16 + 1).map(x => 2 ** x)) {
   const ints = randInts(size, 1, size);
@@ -23,6 +23,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   const intsFormergeModified = [...ints];
   const intsForHeap = [...ints];
   const intsForQuick = [...ints];
+  const intsForRandQuick = [...ints];
   const intsForBuiltin = [...ints];
 
   const insertion = () => insertionSort(intsForInsertion);
@@ -33,6 +34,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   const mergeModified = () => mergeSortModified(intsFormergeModified);
   const heap = () => heapSort(intsForHeap);
   const quick = () => quickSort(intsForQuick);
+  const randQuick = () => randomizedQuickSort(intsForRandQuick);
   const builtin = () => intsForBuiltin.sort((x, y) => x - y);
 
   const times = {
@@ -44,6 +46,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
     mergeModified: bench(mergeModified),
     heap: bench(heap),
     quick: bench(quick),
+    randQuick: bench(randQuick),
     builtin: bench(builtin),
   };
 

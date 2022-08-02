@@ -74,4 +74,24 @@ $$
 で記述される。マスター定理の場合２から、この漸化式の解は $T(n) = \Theta(n\lg n)$ である。  
 したがって分割を均等にすることがアルゴリズムの漸近的な高速化につながる。
 
+## 7.3 乱択版クイックソート
+
+入力が既ソートに近いと分割が偏ってしまうので、ピボットを**無作為抽出**(random sampling)する。  
+これにより、平均的にはそれなりにうまく２分割されると期待できる。
+
+```pseudo
+RANDOMIZED-QUICKSORT(A, p, r):
+  if p < r
+    q = RANDOMIZED-PARTITION(A, p, r)
+    RANDOMIZED-QUICKSORT(A, p, q - 1)
+    RANDOMIZED-QUICKSORT(A, q + 1, r)
+```
+
+```pseudo
+RANDOMIZED-PARTITION(A, p, r):
+  i = RANDOM(p, r)
+  A[r] と A[i] を交換する
+  return PARTITION(A, p, r)
+```
+
 [← 前へ](../ch06/note.md)

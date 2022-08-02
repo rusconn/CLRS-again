@@ -1,4 +1,5 @@
 import { swap } from "@/data/array";
+import { randInt } from "@/util";
 import { insertionSortForModify } from "@/ch02/code";
 
 /** worst: Θ(n^2), best: Θ(nlgn), average: Θ(nlgn) */
@@ -15,6 +16,29 @@ export const quickSort = (A: number[], p = 0, r = A.length - 1) => {
   const q = partition(A, p, r);
   quickSort(A, p, q - 1);
   quickSort(A, q + 1, r);
+};
+
+/** expected: Θ(nlgn) */
+export const randomizedQuickSort = (A: number[], p = 0, r = A.length - 1) => {
+  if (p >= r) {
+    return;
+  }
+
+  if (r - p <= 128) {
+    insertionSortForModify(A, p, r);
+    return;
+  }
+
+  const q = randomizedPartition(A, p, r);
+  randomizedQuickSort(A, p, q - 1);
+  randomizedQuickSort(A, q + 1, r);
+};
+
+/** Θ(n) (n=r-p+1) */
+export const randomizedPartition = (A: number[], p: number, r: number) => {
+  const i = randInt(p, r);
+  swap(A, r, i);
+  return partition(A, p, r);
 };
 
 /** Θ(n) (n=r-p+1) */
