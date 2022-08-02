@@ -94,4 +94,9 @@ RANDOMIZED-PARTITION(A, p, r):
   return PARTITION(A, p, r)
 ```
 
+## 7.4 クイックソートの解析
+
+すべての要素が異なるという仮定の下で、 $\text{RANDOMIZED-PARTITION}$ を用いると、  
+クイックソートの期待実行時間は $O(n\lg n)$ になる。詳細は省略。
+
 [← 前へ](../ch06/note.md)
