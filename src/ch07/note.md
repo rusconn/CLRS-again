@@ -100,3 +100,5 @@ RANDOMIZED-PARTITION(A, p, r):
 クイックソートの期待実行時間は $O(n\lg n)$ になる。詳細は省略。
 
 [← 前へ](../ch06/note.md)
+
+[次へ →](../ch08/note.md)
