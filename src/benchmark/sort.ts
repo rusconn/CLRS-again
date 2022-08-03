@@ -11,6 +11,7 @@ import {
 } from "@/ch02/code";
 import { heapSort } from "@/ch06/code";
 import { quickSort, randomizedQuickSort } from "@/ch07/code";
+import { countingSort } from "@/ch08/code";
 
 for (const size of range(16 + 1).map(x => 2 ** x)) {
   const ints = randInts(size, 1, size);
@@ -25,6 +26,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   const intsForQuick = [...ints];
   const intsForRandQuick = [...ints];
   const intsForBuiltin = [...ints];
+  const intsForCounting = [...ints];
 
   const insertion = () => insertionSort(intsForInsertion);
   const selection = () => selectionSort(intsForSelection);
@@ -36,6 +38,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   const quick = () => quickSort(intsForQuick);
   const randQuick = () => randomizedQuickSort(intsForRandQuick);
   const builtin = () => intsForBuiltin.sort((x, y) => x - y);
+  const counting = () => countingSort(intsForCounting, size);
 
   const times = {
     insertion: bench(insertion),
@@ -48,6 +51,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
     quick: bench(quick),
     randQuick: bench(randQuick),
     builtin: bench(builtin),
+    counting: bench(counting),
   };
 
   console.log({ size, times });
