@@ -1,7 +1,7 @@
 import { range } from "@/data/array";
 import { randInts } from "@/util";
 import { mergeSort } from "@/ch02/code";
-import { countingSort, countIntervalNaive, countIntervalByRanking } from "./code";
+import { countingSort, countIntervalNaive, countIntervalByRanking, bucketSort } from "./code";
 
 describe("countingSort", () => {
   const patterns = range(5).map(_ => ({ input: randInts(10, 0, 10) }));
@@ -33,5 +33,17 @@ describe("countIntervalNaive and countIntervalByRanking", () => {
   test.each(patterns)("%j", ({ input: { A, k, a, b }, output }) => {
     expect(countIntervalNaive(A, a, b)).toEqual(output);
     expect(countIntervalByRanking(A, k, a, b)).toEqual(output);
+  });
+});
+
+describe("bucketSort", () => {
+  const patterns = range(5).map(_ => ({
+    input: range(5).map(__ => Math.random()),
+  }));
+
+  test.each(patterns)("%j", ({ input }) => {
+    const output = bucketSort(input);
+    mergeSort(input);
+    expect(output).toEqual(input);
   });
 });

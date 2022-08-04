@@ -1,3 +1,5 @@
+import { insertionSort } from "@/ch02/code";
+
 /** Θ(n+k) */
 export const countingSort = (A: readonly number[], k: number) => {
   const B = Array<number>(A.length);
@@ -69,4 +71,24 @@ export const countIntervalRanked = (C: readonly number[], k: number, a: number, 
   const left = Math.max(0, a);
   const right = Math.min(k, b);
   return C[right] - (C[left - 1] ?? 0);
+};
+
+/** expected: O(n) (when A follows a uniform distribution) (0 ≤ A[i] <1 ) */
+export const bucketSort = (A: readonly number[]) => {
+  const n = A.length;
+  const B = Array<number[]>(n);
+
+  for (let i = 0; i < n; i++) {
+    B[i] = [];
+  }
+
+  for (let i = 0; i < n; i++) {
+    B[Math.floor(n * A[i])].push(A[i]);
+  }
+
+  for (let i = 0; i < n; i++) {
+    insertionSort(B[i]);
+  }
+
+  return B.flat();
 };
