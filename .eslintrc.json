@@ -23,6 +23,8 @@
     "no-param-reassign": "off",
     // 簡潔に記述することを優先したい
     "no-plusplus": "off",
+    // パフォーマンスに影響があるので使わない
+    "prefer-destructuring": "off",
     // トップダウンに書きたい
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-explicit-any": "off",
