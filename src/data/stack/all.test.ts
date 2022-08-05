@@ -1,9 +1,15 @@
 import { BinaryHeapStack } from "./binheap";
+import { ArrayDequeStack } from "./adeque";
+import { ArrayQueueStack } from "./aqueue";
+import { ArrayStack } from "./array";
 import { BuiltInArrayStack } from "./biarray";
 
 describe("push and pop", () => {
   const stacks = [
     { stack: new BinaryHeapStack<number>() },
+    { stack: new ArrayDequeStack<number>(2) },
+    { stack: new ArrayQueueStack<number>(2) },
+    { stack: new ArrayStack<number>(2) },
     { stack: new BuiltInArrayStack<number>() },
   ];
 

@@ -1,9 +1,15 @@
 import { BinaryHeapQueue } from "./binheap";
+import { ArrayDequeQueue } from "./adeque";
+import { ArrayQueue } from "./array";
+import { ArrayStackQueue } from "./astack";
 import { BuiltInArrayQueue } from "./biarray";
 
 describe("enqueue and dequeue", () => {
   const queues = [
     { queue: new BinaryHeapQueue<number>() },
+    { queue: new ArrayDequeQueue<number>(2) },
+    { queue: new ArrayQueue<number>(2) },
+    { queue: new ArrayStackQueue<number>(2) },
     { queue: new BuiltInArrayQueue<number>() },
   ];
 

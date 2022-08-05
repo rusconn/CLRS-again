@@ -67,3 +67,5 @@ RANDOMIZED-SELECT(A, p, r, i):
 要素がすべて異なるならば、 $\text{RANDOMIZED-SELECT}$ の期待実行時間は $\Theta(n)$ で抑えられる。
 
 [← 前へ](../ch08/note.md)
+
+[次へ →](../ch10/note.md)
