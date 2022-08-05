@@ -1,3 +1,5 @@
+import { randomizedPartition, randomizedQuickSort } from "@/ch07/code";
+
 /** Θ(n) (comparison among elements = 2n-2 times) */
 export const minmax = (A: readonly number[]): [number, number] => {
   let min = A[0];
@@ -49,4 +51,34 @@ export const minmaxByPairing = (A: readonly number[]): [number, number] => {
   }
 
   return [min, max];
+};
+
+/** expected: Θ(nlgn) */
+export const select = (A: number[], i: number) => {
+  randomizedQuickSort(A);
+  return A[i - 1];
+};
+
+/** expected: Θ(n) */
+export const randomizedSelect = (
+  A: number[],
+  i: number,
+  p = 0,
+  r = A.length - 1
+): typeof A[number] => {
+  if (p === r) {
+    return A[p];
+  }
+
+  const q = randomizedPartition(A, p, r);
+  const k = q - p + 1;
+
+  if (i === k) {
+    return A[q];
+  }
+
+  // prettier-ignore
+  return i < k
+    ? randomizedSelect(A, i, p, q - 1)
+    : randomizedSelect(A, i - k, q + 1, r);
 };

@@ -41,4 +41,29 @@ MINIMUM(A):
 その後、小さい方と暫定最小値、大きい方と暫定最大値を比較する。  
 合計３回の比較によって、２要素を検査できたことになる。
 
+## 9.2 線形期待時間選択アルゴリズム
+
+一般の選択問題( $i$ 番目に小さい要素の発見)は最小値発見問題より難しそうだが、実は両問題とも漸近的な実行時間は $\Theta(n)$ 。
+
+アルゴリズム $\text{RANDOMIZED-SELECT}$ はクイックソートを手本とする。
+
+```pseudo
+RANDOMIZED-SELECT(A, p, r, i):
+  if p == r
+    return A[p]
+  q = RANDOMIZED-PARTITION(A, p, r)
+  k = q - p + 1
+  if i == k // ピボット値が答
+    return A[q]
+  else if i < k
+    return RANDOMIZED-SELECT(A, p, q - 1, i)
+  else
+    return RANDOMIZED-SELECT(A, q + 1, r, i - k)
+```
+
+クイックソートと違い、分割の一方のみに再帰する。  
+探したい要素が存在する方の分割のみ探すということ。
+
+要素がすべて異なるならば、 $\text{RANDOMIZED-SELECT}$ の期待実行時間は $\Theta(n)$ で抑えられる。
+
 [← 前へ](../ch08/note.md)
