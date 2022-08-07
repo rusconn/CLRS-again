@@ -3,6 +3,8 @@ import { BinaryHeapQueue } from "@/data/queue/binheap";
 import { ArrayDequeQueue } from "@/data/queue/adeque";
 import { ArrayQueue } from "@/data/queue/array";
 import { BuiltInArrayQueue } from "@/data/queue/biarray";
+import { DoublyLinkedListQueue } from "@/data/queue/dlist";
+import { SinglyLinkedListQueue } from "@/data/queue/slist";
 import { bench } from "@/util";
 
 for (const size of range(18 + 1).map(x => 2 ** x)) {
@@ -30,11 +32,25 @@ for (const size of range(18 + 1).map(x => 2 ** x)) {
     for (let i = 0; i < size; i++) Q.dequeue();
   };
 
+  const dlist = () => {
+    const Q = new DoublyLinkedListQueue<number>();
+    for (let i = 0; i < size; i++) Q.enqueue(i);
+    for (let i = 0; i < size; i++) Q.dequeue();
+  };
+
+  const slist = () => {
+    const Q = new SinglyLinkedListQueue<number>();
+    for (let i = 0; i < size; i++) Q.enqueue(i);
+    for (let i = 0; i < size; i++) Q.dequeue();
+  };
+
   const times = {
     binheap: bench(binheap),
     adeque: bench(adeque),
     array: bench(array),
     biarray: bench(biarray),
+    dlist: bench(dlist),
+    slist: bench(slist),
   };
 
   console.log({ size, times });

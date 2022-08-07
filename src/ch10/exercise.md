@@ -166,3 +166,150 @@ $\text{POP}$ : $O(1)$
 POP(Q₁):
   return DEQUEUE(Q₁)
 ```
+
+## 10.2-1
+
+> 動的集合操作 $\text{INSERT}$ を一方向連結リスト上で $O(1)$ 時間で実行できるように実現できるか？操作 $\text{DELETE}$ はどうか？
+
+$\text{INSERT}$ は $O(1)$ 時間で実現できる。リストの先頭に追加すればよい。  
+$\text{DELETE}$ は $O(1)$ で実現できない。  
+削除する要素の前の要素を、削除する要素の後の要素へ繋ぐ必要があるが、前者を定数時間で取得できない。
+
+## 10.2-2
+
+> 一方向連結リスト $L$ を用いてスタックを実現せよ。操作 $\text{PUSH}$ と $\text{POP}$ は共に $O(1)$ 時間で実行できるようにすること。
+
+```pseudo
+EMPTY(L):
+  return L.head == NIL
+```
+
+```pseudo
+PUSH(L, x):
+  x.next = L.head
+  L.head = x
+```
+
+```pseudo
+POP(L):
+  if EMPTY(L)
+    error "アンダーフロー"
+  else
+    x = L.head
+    L.head = L.head.next
+    return x
+```
+
+## 10.2-3
+
+> 一方向連結リスト $L$ を用いてキューを実現せよ。操作 $\text{ENQUEUE}$ と $\text{DEQUEUE}$ は共に $O(1)$ 時間で実行できるようにすること。
+
+リストの先頭へのポインタだけでは $O(1)$ を達成できないので、リストの末尾へのポインタ $tail$ を用意する。
+
+```pseudo
+ENQUEUE(L, x):
+  if EMPTY(L)
+    L.head = x
+  else
+    L.tail.next = x
+  L.tail = x
+  x.next = NIL
+```
+
+```pseudo
+DEQUEUE(L):
+  if EMPTY(L)
+    error "アンダーフロー"
+  else
+    x = L.head
+    L.head = x.next
+    if EMPTY(L)
+      L.tail = NIL
+    return x
+```
+
+## 10.2-4
+
+> 本文で述べたように、手続き $\text{LIST-SEARCH'}$ のループの各繰返しでは２つの条件、 $x \ne L.nil$ と $x.key \ne k$ を判定する。各繰返しから条件 $x \ne L.nil$ の判定を除去する方法を述べよ。
+
+```pseudo
+LIST-SEARCH'(L, k):
+  L.nil.key = k
+  x = L.nil.next
+  while x.key ≠ k
+    x = x.next
+  return x
+```
+
+## 10.2-5
+
+> 辞書操作 $\text{INSERT}$ , $\text{DELETE}$ , $\text{SEARCH}$ を一方向循環リストを用いて実現せよ。実現した操作の実行時間を評価せよ。
+
+$\text{INSERT}$ : $O(1)$
+
+```pseudo
+INSERT(L, x):
+  x.next = L.nil.next
+  L.nil.next = x
+```
+
+$\text{DELETE}$ : $O(n)$
+
+```pseudo
+DELETE(L, x):
+  prev = L.nil
+  while prev.next ≠ x
+    prev = prev.next
+    if prev == L.nil
+      error "見つからない"
+  prev.next = x.next
+```
+
+$\text{SEARCH}$ : $O(n)$
+
+```pseudo
+SEARCH(L, k):
+  L.nil.key = k
+  x = L.nil.next
+  while x.key ≠ k
+    x = x.next
+  return x
+```
+
+## 10.2-6
+
+> 動的集合操作 $\text{UNION}$ は、共通部分を持たない２つの集合 $S_1$ と $S_2$ を入力として取り、 $S_1$ と $S_2$ に属するすべての要素からなる集合 $S = S_1 \cup S_2$ を返す。通常、操作は集合 $S_1$ と $S_2$ を破壊する。適切なリストデータ構造を用いて、 $\text{UNION}$ を $O(1)$ 時間で実行できるように実現する方法を示せ。
+
+$S_1$ と $S_2$ を先頭要素へのポインタ $head$ 、末尾要素へのポインタ $tail$ を持つ一方向リストとする。
+
+```pseudo
+UNION(S₁, S₂):
+  S₁.tail.next = S₂.head
+  S₁.tail = S₂.tail
+  S₂.head = NIL
+  S₂.tail = NIL
+```
+
+これで $S_1$ が $S = S_1 \cup S_2$ となり、 $S_2$ が空になる。
+
+## 10.2-7
+
+> $n$ 個の要素を持つ一方向連結リストを $\Theta(n)$ 時間で反転する再帰を用いない手続きを与えよ。ただし、リスト領域を除くと定数の記憶容量しか用いてはならない。
+
+```pseudo
+REVERSE(L):
+  x = NIL
+  y = L.head
+  while y ≠ NIL
+    next = y.next
+    y.next = x
+    x = y
+    y = next
+  L.head = x
+```
+
+## 10.2-8 ★
+
+> 各アイテムごとに１つのポインタ値 $x.np$ しか使用しないで双方向リストを実現する方法を説明せよ。（普通は２つのポインタ値 $prev$ と $next$ を用いる。）すべてのポインタ値 $x$ は $k$ ビットの整数で表現できると仮定し、 $x.np$ を $x.next$ と $x.prev$ の間の $k$ ビット「排他的論理和」、すなわち、 $x.np = x.next \text{ XOR } x.prev$ と定義せよ。（値 $\text{NIL}$ は $0$ によって表現される。）リストの先頭に到達するために必要な情報を必ず記述すること。このようなリスト上で $\text{SEARCH}$ , $\text{INSERT}$ , $\text{DELETE}$ 操作を実現する方法を示せ。さらに、リストを $O(1)$ 時間で反転する方法を示せ。
+
+スキップ

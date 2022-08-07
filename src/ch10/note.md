@@ -63,4 +63,87 @@ DEQUEUE(Q):
 
 操作の実行にはそれぞれ $O(1)$ 時間かかる。
 
+## 10.2 連結リスト
+
+オブジェクトがある順序で一列に並ぶデータ構造を**連結リスト**(linked list)と言う。  
+配列は添字によってオブジェクの線形順序が決まるのに対し、連結リストでは各オブジェクトが持つポインタによって決まる。  
+連結リストには**一方向**(singly linked)と**双方向**(doubly linked)、ソート済みと未ソート、循環と非循環がある。
+
+以降未ソート双方向リストを仮定して議論を進める。
+
+### 連結リストの探索
+
+手続き $\text{LIST-SEARCH}(L,k)$ は簡単な線形探索によってリスト $L$ からキー $k$ を持つ要素を発見し、そのポインタを返す。  
+最悪実行時間 $\Theta(n)$ 。
+
+```pseudo
+LIST-SEARCH(L, k):
+  x = L.head
+  while x ≠ NIL かつ x.key ≠ k
+    x = x.next
+  return x
+```
+
+### 連結リストへの挿入
+
+手続き $\text{LIST-INSERT}(L,x)$ はリストの先頭へ $x$ を"継ぎ足す"。 $O(1)$ 。
+
+```pseudo
+LIST-INSERT(L, x):
+  x.next = L.head
+  if L.head ≠ NIL
+    L.head.prev = x
+  L.head = x
+  x.prev = NIL
+```
+
+### 連結リストからの削除
+
+手続き $\text{LIST-DELETE}(L,x)$ は要素 $x$ を連結リスト $L$ から"解き放つ"。 $O(1)$ 。
+
+```pseudo
+LIST-DELETE(L, x):
+  if x.prev ≠ NIL
+    x.prev.next = x.next
+  else
+    L.head = x.next
+  if x.next ≠ NIL
+    x.next.prev = x.prev
+```
+
+### 番　兵
+
+これまでに挙げた擬似コードは連結リストの先頭と末尾の境界条件を考慮したものになっている。  
+**番兵**(sentinel)を配置することで、境界の検出をいくらか簡単化出来る。
+
+```pseudo
+LIST-SEARCH'(L, k):
+  x = L.nil.next
+  while x ≠ L.nil かつ x.key ≠ k
+    x = x.next
+  return x
+```
+
+```pseudo
+LIST-INSERT'(L, x):
+  x.next = L.nil.next
+  L.nil.next.prev = x
+  L.nil.next = x
+  x.prev = L.nil
+```
+
+```pseudo
+LIST-DELETE'(L, x):
+  x.prev.next = x.next
+  x.next.prev = x.prev
+```
+
+番兵はリストの要素と同じ属性を持つ。ここでは $nil$ という名前の番兵を置いた。  
+番兵を置いたことで**双方向循環リスト**を形成するようになった。  
+$L.nil.next$ はリストの先頭であり、 $L.nil.prev$ はリストの末尾である。  
+換言すれば、番兵はリストの先頭と末尾の間に存在する。  
+空リストの場合、 $L.nil.next = L.nil$ かつ $L.nil.prev = L.nil$ となる。
+
+番兵はコードの簡単化といくらかの計算量削減に寄与するが、記憶は余分に必要となる。
+
 [← 前へ](../ch09/note.md)

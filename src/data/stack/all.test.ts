@@ -3,6 +3,8 @@ import { ArrayDequeStack } from "./adeque";
 import { ArrayQueueStack } from "./aqueue";
 import { ArrayStack } from "./array";
 import { BuiltInArrayStack } from "./biarray";
+import { DoublyLinkedListStack } from "./dlist";
+import { SinglyLinkedListStack } from "./slist";
 
 describe("push and pop", () => {
   const stacks = [
@@ -11,6 +13,8 @@ describe("push and pop", () => {
     { stack: new ArrayQueueStack<number>(2) },
     { stack: new ArrayStack<number>(2) },
     { stack: new BuiltInArrayStack<number>() },
+    { stack: new DoublyLinkedListStack<number>() },
+    { stack: new SinglyLinkedListStack<number>() },
   ];
 
   test.each(stacks)("stack No.%#", ({ stack }) => {

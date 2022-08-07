@@ -3,6 +3,8 @@ import { ArrayDequeQueue } from "./adeque";
 import { ArrayQueue } from "./array";
 import { ArrayStackQueue } from "./astack";
 import { BuiltInArrayQueue } from "./biarray";
+import { DoublyLinkedListQueue } from "./dlist";
+import { SinglyLinkedListQueue } from "./slist";
 
 describe("enqueue and dequeue", () => {
   const queues = [
@@ -11,6 +13,8 @@ describe("enqueue and dequeue", () => {
     { queue: new ArrayQueue<number>(2) },
     { queue: new ArrayStackQueue<number>(2) },
     { queue: new BuiltInArrayQueue<number>() },
+    { queue: new DoublyLinkedListQueue<number>() },
+    { queue: new SinglyLinkedListQueue<number>() },
   ];
 
   test.each(queues)("queue No.%#", ({ queue }) => {
