@@ -162,4 +162,26 @@ $L.nil.next$ はリストの先頭であり、 $L.nil.prev$ はリストの末�
 
 その他詳細は省略する。
 
+## 10.4 根付き木の表現
+
+ポインタに基づくデータ構造によって根付き木を表現する２つの方法を考察する。
+
+### ２分木
+
+２分木 $T$ の各節点に $p$ , $left$ , $right$ という属性を持たせる。  
+$p$ に親、 $left$ に左の子、 $right$ に右の子を指すポインタを格納する。  
+節点 $x$ に左の子がなければ $x.left = \text{NIL}$ 、右の子も同様。  
+$T.root = \text{NIL}$ なら $T$ は空である。
+
+### 分岐数に制約のない根付き木
+
+２分木によって任意の数の子を持つ木を表現できる。  
+**左-子、右-兄弟表現**(left-child, right-sibling representation)を使う。
+
+1. $x.left\text{-}child$ は節点 $x$ の最左の子を指す
+1. $x.right\text{-}sibling$ は $x$ のすぐ右の兄弟を指す
+
+節点 $x$ に子がなければ $x.left\text{-}child = \text{NIL}$ であり、  
+$x$ が親の最右の子ならば $x.right\text{-}sibling = \text{NIL}$ である。
+
 [← 前へ](../ch09/note.md)
