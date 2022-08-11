@@ -185,3 +185,5 @@ $T.root = \text{NIL}$ なら $T$ は空である。
 $x$ が親の最右の子ならば $x.right\text{-}sibling = \text{NIL}$ である。
 
 [← 前へ](../ch09/note.md)
+
+[次へ →](../ch11/note.md)
