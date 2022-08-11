@@ -155,6 +155,15 @@ export class DoublyLinkedList<T> {
     x.next.prev = x.prev;
   }
 
+  /** Θ(n) */
+  deleteBy<K>(key: K, toKey: (x: T) => K) {
+    const node = this.searchBy(key, toKey);
+
+    if (node != null) {
+      this.delete(node);
+    }
+  }
+
   /* eslint-enable class-methods-use-this */
 
   /** O(1) */

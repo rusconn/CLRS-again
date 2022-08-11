@@ -1,6 +1,7 @@
 import { BuiltInArrayDict } from "./biarray";
 import { BuiltInMapDict } from "./bimap";
 import { BuiltInObjectDict } from "./biobject";
+import { ChainingHashTableDict } from "./chtable";
 import { DirectAddressTableDict } from "./datable";
 
 type User = {
@@ -17,6 +18,7 @@ describe("search, insert and delete", () => {
     { dict: new BuiltInArrayDict<User["id"], User>() },
     { dict: new BuiltInMapDict<User["id"], User>() },
     { dict: new BuiltInObjectDict<User["id"], User>() },
+    { dict: new ChainingHashTableDict<User["id"], User>(id => id % 3) },
     { dict: new DirectAddressTableDict<User>(10) },
   ];
 

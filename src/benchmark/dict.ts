@@ -2,6 +2,7 @@ import { range } from "@/data/array";
 import { BuiltInArrayDict } from "@/data/dict/biarray";
 import { BuiltInMapDict } from "@/data/dict/bimap";
 import { BuiltInObjectDict } from "@/data/dict/biobject";
+import { ChainingHashTableDict } from "@/data/dict/chtable";
 import { DirectAddressTableDict } from "@/data/dict/datable";
 import { bench } from "@/util";
 
@@ -40,6 +41,15 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
     }
   };
 
+  const chtable = () => {
+    const D = new ChainingHashTableDict<User["id"], User>(x => x % Math.floor(size / 3));
+    for (let i = 0; i < size; i++) D.insert(users[i].id, users[i]);
+    for (let i = 0; i < size; i++) {
+      const searched = D.search(users[i].id) as User;
+      D.delete(searched.id);
+    }
+  };
+
   const datable = () => {
     const D = new DirectAddressTableDict<User>(size);
     for (let i = 0; i < size; i++) D.insert(users[i].id, users[i]);
@@ -53,6 +63,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
     biarray: bench(biarray),
     bimap: bench(bimap),
     biobject: bench(biobject),
+    chtable: bench(chtable),
     datable: bench(datable),
   };
 
