@@ -3,6 +3,7 @@ import { BuiltInMapDict } from "./bimap";
 import { BuiltInObjectDict } from "./biobject";
 import { ChainingHashTableDict } from "./chtable";
 import { DirectAddressTableDict } from "./datable";
+import { OpenAddressingHashTableDict } from "./oahtable";
 
 type User = {
   id: number;
@@ -20,6 +21,14 @@ describe("search, insert and delete", () => {
     { dict: new BuiltInObjectDict<User["id"], User>() },
     { dict: new ChainingHashTableDict<User["id"], User>(id => id % 3) },
     { dict: new DirectAddressTableDict<User>(10) },
+    {
+      dict: new OpenAddressingHashTableDict<User["id"], User>((key, i) => {
+        const m = 2 ** 4;
+        const h1 = (k: number) => k % m;
+        const h2 = (k: number) => 1 + (k % (m - 1));
+        return (h1(key) + i * h2(key)) % m;
+      }, 2 ** 4),
+    },
   ];
 
   test.each(dicts)("dict No.%#", ({ dict }) => {

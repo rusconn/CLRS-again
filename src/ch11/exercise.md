@@ -149,3 +149,112 @@ const h = k => Math.floor(m * ((k * A) % 1));
 ## 11.3-6 ★
 
 スキップ
+
+## 11.4-1
+
+> 補助ハッシュ関数 $h'(k) = k$ を用いるオープンアドレス指定法によって、大きさ $m = 11$ のハッシュ表にキー $10,22,31,4,15,28,17,88,59$ を挿入する。線形探査法、 $c_1=1,c_2=3$ とした $2$ 次関数探査法、 $h_1(k) = k$ と $h_2(k) = 1+(k \bmod (m-1))$ を用いるダブルハッシュ法を利用したときの挿入結果を図示せよ。
+
+### 線形探査法
+
+$h(k, i) = k + i$
+
+| 挿入する要素 | ハッシュ表                                            |
+| ------------ | ----------------------------------------------------- |
+| 10           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL |
+| 22           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10  |
+| 31           | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10   |
+| 4            | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 31, 10    |
+| 15           | 22, NIL, NIL, NIL, 4, NIL, NIL, NIL, NIL, 31, 10      |
+| 28           | 22, NIL, NIL, NIL, 4, 15, NIL, NIL, NIL, 31, 10       |
+| 17           | 22, NIL, NIL, NIL, 4, 15, 28, NIL, NIL, 31, 10        |
+| 88           | 22, NIL, NIL, NIL, 4, 15, 28, 17, NIL, 31, 10         |
+| 59           | 22, 88, NIL, NIL, 4, 15, 28, 17, NIL, 31, 10          |
+| -            | 22, 88, NIL, NIL, 4, 15, 28, 17, 59, 31, 10           |
+
+### $2$ 次関数探査法
+
+$h(k, i) = k + i + 3i^2$
+
+| 挿入する要素 | ハッシュ表                                            |
+| ------------ | ----------------------------------------------------- |
+| 10           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL |
+| 22           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10  |
+| 31           | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10   |
+| 4            | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 31, 10    |
+| 15           | 22, NIL, NIL, NIL, 4, NIL, NIL, NIL, NIL, 31, 10      |
+| 28           | 22, NIL, NIL, NIL, 4, NIL, NIL, NIL, 15, 31, 10       |
+| 17           | 22, NIL, NIL, NIL, 4, NIL, 28, NIL, 15, 31, 10        |
+| 88           | 22, NIL, NIL, 17, 4, NIL, 28, NIL, 15, 31, 10         |
+| 59           | 22, NIL, 88, 17, 4, NIL, 28, NIL, 15, 31, 10          |
+| -            | 22, NIL, 88, 17, 4, NIL, 28, 59, 15, 31, 10           |
+
+### ダブルハッシュ法
+
+$h(k, i) = (k + i(1 + k \bmod 10)) \bmod 11$
+
+| 挿入する要素 | ハッシュ表                                            |
+| ------------ | ----------------------------------------------------- |
+| 10           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL |
+| 22           | NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10  |
+| 31           | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 10   |
+| 4            | 22, NIL, NIL, NIL, NIL, NIL, NIL, NIL, NIL, 31, 10    |
+| 15           | 22, NIL, NIL, NIL, 4, NIL, NIL, NIL, NIL, 31, 10      |
+| 28           | 22, NIL, NIL, NIL, 4, 15, NIL, NIL, NIL, 31, 10       |
+| 17           | 22, NIL, NIL, NIL, 4, 15, 28, NIL, NIL, 31, 10        |
+| 88           | 22, NIL, NIL, 17, 4, 15, 28, NIL, NIL, 31, 10         |
+| 59           | 22, NIL, NIL, 17, 4, 15, 28, 88, NIL, 31, 10          |
+| -            | 22, NIL, 59, 17, 4, 15, 28, 88, NIL, 31, 10           |
+
+## 11.4-2
+
+> 本文で概略を説明した $\text{HASH-DELETE}$ の擬似コードを書き、 $\text{HASH-INSERT}$ を特別な値 $\text{DELETED}$ が扱えるように修正せよ。
+
+```pseudo
+HASH-DELETE(T, k):
+  i = 0
+  repeat
+    j = h(k, i)
+    if T[j] == k
+      T[j] = DELETED
+      return j
+    else
+      i = i + 1
+  until T[j] == NIL または i == m
+  error "not exist"
+```
+
+```pseudo
+HASH-INSERT'(T, k):
+  i = 0
+  repeat
+    j = h(k, i)
+    if T[j] == NIL または T[j] == DELETED
+      T[j] = k
+      return j
+    else
+      i = i + 1
+  until i == m
+  error "ハッシュ表オーバーフロー"
+```
+
+## 11.4-3
+
+> 一様ハッシュを仮定するオープンアドレス指定法を考える。負荷率が $3/4$ と $7/8$ のときに、失敗に終わる探索に必要な探査回数の期待値の上界と、成功する探索に必要な探査回数の期待値の上界を求めよ。
+
+### 負荷率 $3/4$
+
+失敗: $1/(1-\alpha) = 1/(1-3/4) = 4$  
+成功: $\frac{1}{\alpha}\ln\frac{1}{1-\alpha} = \frac{1}{3/4}\ln\frac{1}{1-3/4} = 4/3 \ln 4 \approx 1.848 $
+
+### 負荷率 $7/8$
+
+失敗: $1/(1-\alpha) = 1/(1-7/8) = 8$  
+成功: $\frac{1}{\alpha}\ln\frac{1}{1-\alpha}\frac{1}{7/8}\ln\frac{1}{1-7/8} = 8/7\ln 8 \approx 2.376$
+
+## 11.4-4 ★
+
+スキップ
+
+## 11.4-5 ★
+
+スキップ

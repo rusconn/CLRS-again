@@ -4,6 +4,7 @@ import { BuiltInMapDict } from "@/data/dict/bimap";
 import { BuiltInObjectDict } from "@/data/dict/biobject";
 import { ChainingHashTableDict } from "@/data/dict/chtable";
 import { DirectAddressTableDict } from "@/data/dict/datable";
+import { OpenAddressingHashTableDict } from "@/data/dict/oahtable";
 import { bench } from "@/util";
 
 type User = {
@@ -59,12 +60,27 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
     }
   };
 
+  const oahtable = () => {
+    const D = new OpenAddressingHashTableDict<User["id"], User>((key, i) => {
+      const m = size;
+      const h1 = (k: number) => k % m;
+      const h2 = (k: number) => 1 + (k % (m - 1));
+      return (h1(key) + i * h2(key)) % m;
+    }, size);
+    for (let i = 0; i < size; i++) D.insert(users[i].id, users[i]);
+    for (let i = 0; i < size; i++) {
+      const searched = D.search(users[i].id) as User;
+      D.delete(searched.id);
+    }
+  };
+
   const times = {
     biarray: bench(biarray),
     bimap: bench(bimap),
     biobject: bench(biobject),
     chtable: bench(chtable),
     datable: bench(datable),
+    oahtable: bench(oahtable),
   };
 
   console.log({ size, times });
