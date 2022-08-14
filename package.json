@@ -2,7 +2,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "ts": "ts-node",
+    "ts": "ts-node --swc",
     "test": "jest -i --silent",
     "fix": "run-s fix:*",
     "fix:typecheck": "tsc --noEmit",
@@ -11,6 +11,7 @@
     "prepare": "husky install"
   },
   "devDependencies": {
+    "@swc/core": "^1.2.231",
     "@types/jest": "^28.1.5",
     "@typescript-eslint/eslint-plugin": "^5.30.6",
     "@typescript-eslint/parser": "^5.30.6",
