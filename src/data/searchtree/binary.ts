@@ -11,7 +11,76 @@ export type Node<K, V> = {
 export class BinarySearchTree<K, V> {
   constructor(private root: Node<K, V> | null) {}
 
-  /** O(?) */
+  /** O(h) */
+  search(key: K) {
+    let node = this.root;
+
+    while (node != null && key !== node.key) {
+      node = key < node.key ? node.left : node.right;
+    }
+
+    return node ?? undefined;
+  }
+
+  /** O(h) */
+  minimum(node = this.root) {
+    if (node == null) {
+      return undefined;
+    }
+
+    while (node.left != null) {
+      node = node.left;
+    }
+
+    return node;
+  }
+
+  /** O(h) */
+  maximum(node = this.root) {
+    if (node == null) {
+      return undefined;
+    }
+
+    while (node.right != null) {
+      node = node.right;
+    }
+
+    return node;
+  }
+
+  /** O(h) */
+  successor(node: Node<K, V>) {
+    if (node.right != null) {
+      return this.minimum(node.right);
+    }
+
+    let succ = node.p;
+
+    while (succ != null && node === succ.right) {
+      node = succ;
+      succ = succ.p;
+    }
+
+    return succ ?? undefined;
+  }
+
+  /** O(h) */
+  predecessor(node: Node<K, V>) {
+    if (node.left != null) {
+      return this.maximum(node.left);
+    }
+
+    let pred = node.p;
+
+    while (pred != null && node === pred.left) {
+      node = pred;
+      pred = pred.p;
+    }
+
+    return pred ?? undefined;
+  }
+
+  /** Θ(?) */
   walkInorderIter() {
     const nodes = new ArrayStack<Node<K, V> | null>(128);
     const visited: Node<K, V>[] = [];

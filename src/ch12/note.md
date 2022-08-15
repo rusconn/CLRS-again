@@ -30,4 +30,79 @@ INORDER-TREE-WALK(x):
 
 同様に、**先行順木巡回**(preorder tree walk)と**後行順木巡回**(postorder tree walk)も存在する。
 
+## 12.2 ２分探索木に対する質問
+
+$2$ 分探索木からのキーの探索がしばしば必要になる。  
+$\text{SEARCH}$, $\text{MINIMUM}$, $\text{MAXIMUM}$, $\text{SUCCESSOR}$, $\text{PREDECESSOR}$ を $O(h)$ 時間で実行できることを示す。
+
+### 探　索
+
+```pseudo
+TREE-SEARCH(x, k):
+  if x == NIL または k == x.key
+    return x
+  if k < x.key
+    return TREE-SEARCH(x.left, k)
+  else
+    return TREE-SEARCH(x.right, k)
+```
+
+再帰を通じて出会う節点の列は根から木を下る単純道を形成するので、 $\text{TREE-SEARCH}$ の実行時間は $O(h)$ となる。
+
+反復形に書き換えることもできる。
+
+```pseudo
+ITERATIVE-TREE-SEARCH(x, k):
+  while x ≠ NIL かつ k ≠ x.key
+    if k < x.key
+      x = x.left
+    else
+      x = x.right
+  return x
+```
+
+多くの計算機では反復形手続きのほうが高速。
+
+### 最小値と最大値
+
+```pseudo
+TREE-MINIMUM(x):
+  while x.left ≠ NIL
+    x = x.left
+  return x
+```
+
+```pseudo
+TREE-MAXIMUM(x):
+  while x.right ≠ NIL
+    x = x.right
+  return x
+```
+
+$\text{TREE-SEARCH}$ と同様、根から木を下る単純道を形成するので、実行時間は $O(h)$ となる。
+
+### 次節点と先行節点
+
+$2$ 分探索木の構造から、キーを比較せずに決定できる。
+
+```pseudo
+TREE-SUCCESSOR(x):
+  if x.right ≠ NIL
+    return TREE-MINIMUM(x.right)
+  y = x.p
+  while y ≠ NIL かつ x == y.right
+    x = y
+    y = y.p
+  return y
+```
+
+次節点が存在するときには次節点を、存在しない場合には $\text{NIL}$ を返す。  
+右部分木があればその最左節点が次節点。  
+右部分木がなければ、 $x$ の祖先で、その左の子もまた $x$ の祖先であるものの中で最も木の下にある節点が次節点。
+
+$\text{TREE-PREDECESSOR}$ は $\text{TREE-SUCCESSOR}$ と対称。  
+木を上あるいは下に向かう単純道のいずれかを辿るので、実行時間は $O(h)$ となる。
+
+以上、 $\text{SEARCH}$, $\text{MINIMUM}$, $\text{MAXIMUM}$, $\text{SUCCESSOR}$, $\text{PREDECESSOR}$ を $O(h)$ 時間で実行できると示した。
+
 [← 前へ](../ch11/note.md)
