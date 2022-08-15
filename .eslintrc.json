@@ -17,6 +17,8 @@
     "import/prefer-default-export": "off",
     // 臨機応変に書きたい
     "arrow-body-style": "off",
+    // early continue したい
+    "no-continue": "off",
     // for of を許可
     "no-restricted-syntax": ["error", "ForInStatement", "LabeledStatement", "WithStatement"],
     // in-place アルゴリズムの要求
