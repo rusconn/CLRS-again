@@ -80,6 +80,60 @@ export class BinarySearchTree<K, V> {
     return pred ?? undefined;
   }
 
+  /** O(h) */
+  insert(z: Node<K, V>) {
+    let y = null;
+    let x = this.root;
+
+    // 置き換え先の null を探す
+    while (x != null) {
+      y = x;
+      x = z.key < x.key ? x.left : x.right;
+    }
+
+    z.p = y;
+
+    if (y == null) {
+      this.root = z;
+      return;
+    }
+
+    if (z.key < y.key) {
+      y.left = z;
+    } else {
+      y.right = z;
+    }
+  }
+
+  insertRecur(z: Node<K, V>) {
+    this.insertRecurer(z, null, this.root);
+  }
+
+  /** O(h) */
+  delete(z: Node<K, V>) {
+    if (z.left == null) {
+      this.transplant(z, z.right);
+      return;
+    }
+
+    if (z.right == null) {
+      this.transplant(z, z.left);
+      return;
+    }
+
+    const y = this.minimum(z.right) as Node<K, V>;
+
+    if (y.p !== z) {
+      this.transplant(y, y.right);
+      y.right = z.right;
+      y.right.p = y;
+    }
+
+    this.transplant(z, y);
+    y.left = z.left;
+    y.left.p = y;
+  }
+
   /** Θ(?) */
   walkInorderIter() {
     const nodes = new ArrayStack<Node<K, V> | null>(128);
@@ -121,6 +175,43 @@ export class BinarySearchTree<K, V> {
   /** Θ(n) */
   walkPostorder() {
     this.walkPostorderRecur(this.root);
+  }
+
+  /** O(h) */
+  private insertRecurer(z: Node<K, V>, y: Node<K, V> | null, x: Node<K, V> | null) {
+    if (x == null) {
+      z.p = y;
+
+      if (y == null) {
+        this.root = z;
+        return;
+      }
+
+      if (z.key < y.key) {
+        y.left = z;
+      } else {
+        y.right = z;
+      }
+
+      return;
+    }
+
+    this.insertRecurer(z, x, z.key < x.key ? x.left : x.right);
+  }
+
+  /** O(1) */
+  private transplant(u: Node<K, V>, v: Node<K, V> | null) {
+    if (u.p == null) {
+      this.root = v;
+    } else if (u === u.p.left) {
+      u.p.left = v;
+    } else {
+      u.p.right = v;
+    }
+
+    if (v != null) {
+      v.p = u.p;
+    }
   }
 
   /** Θ(n) */

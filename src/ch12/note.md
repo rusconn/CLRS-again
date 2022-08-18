@@ -105,4 +105,78 @@ $\text{TREE-PREDECESSOR}$ は $\text{TREE-SUCCESSOR}$ と対称。
 
 以上、 $\text{SEARCH}$, $\text{MINIMUM}$, $\text{MAXIMUM}$, $\text{SUCCESSOR}$, $\text{PREDECESSOR}$ を $O(h)$ 時間で実行できると示した。
 
+## 12.3 挿入と削除
+
+### 挿　入
+
+$z$ を子のない節点とする。  
+木の根から開始し、 $z$ と置き換える $\text{NIL}$ を探してある単純道に沿って木を下る。 $O(h)$ 。
+
+```pseudo
+TREE-INSERT(T, z):
+  y = NIL
+  x = T.root
+  while x ≠ NIL
+    y = x
+    if z.key < x.key
+      x = x.left
+    else
+      x = x.right
+  z.p = y
+  if y == NIL
+    T.root = z  // 木 T は空であった
+  elseif z.key < y.key
+    y.left = z
+  else
+    y.right = z
+```
+
+$x$ の親を保持するため、 $y$ を**トレーラポインタ**(trailing pointer)として使っている。
+
+### 削　除
+
+削除は $3$ つの基本的な場合に対応する方針から構成される。
+
+- $z$ が子を持たない場合は、 $z$ の親の子を $\text{NIL}$ に置き換える
+- $z$ が子を $1$ つ持つ場合は、 $z$ の親の子を $z$ の子へ変更する
+- $z$ が子を $2$ つ持つ場合は、 $z$ の右部分木の中から $z$ の次節点 $y$ を発見し、 $z$ の場所に置く。残された $z$ の元右部分木は $y$ の新しい右部分木、元左部分木は $y$ の新しい左部分木とする
+
+ある節点の子である部分木を別の部分木に置き換えるサブルーチン $\text{TRANSPLANT}$ を定義する。
+
+```pseudo
+TRANSPLANT(T, u, v):
+  if u.p == NIL
+    T.root = v
+  elseif u == u.p.left
+    u.p.left = v
+  else
+    u.p.right = v
+  if v ≠ NIL
+    v.p = u.p
+```
+
+手続き $\text{TREE-DELETE}$ は 上記方針を修正した $4$ つの場合を実行する。
+
+```pseudo
+TREE-DELETE(T, z):
+  if z.left == NIL
+    TRANSPLANT(T, z, z.right)
+  elseif z.right == NIL
+    TRANSPLANT(T, z, z.left)
+  else
+    y = TREE-MINIMUM(z.right)
+    if y.p ≠ z
+      TRANSPLANT(T, y, y.right)
+      y.right = z.right
+      y.right.p = y
+    TRANSPLANT(T, z, y)
+    y.left = z.left
+    y.left.p = y
+```
+
+$\text{TREE-MINIMUM}$ の呼出しを除くと、 $\text{TREE-DELETE}$ の実行時間は定数である。  
+したがって、 $\text{TREE-DELETE}$ は $O(h)$ 時間で走る。
+
+以上、 $\text{INSERT}$, $\text{DELETE}$ を $O(h)$ 時間で実行できると示した。
+
 [← 前へ](../ch11/note.md)
