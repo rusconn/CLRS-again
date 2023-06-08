@@ -1,6 +1,10 @@
 {
   "license": "MIT",
   "private": true,
+  "volta": {
+    "node": "16.16.0",
+    "yarn": "1.22.19"
+  },
   "scripts": {
     "ts": "ts-node --swc",
     "test": "jest -i --silent",
