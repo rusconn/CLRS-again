@@ -1,6 +1,12 @@
-import { BinaryHeap } from "./binary";
+import { assertEquals, describe, it } from "/deps.ts";
 
-describe("buildMinHeap", () => {
+import { BinaryHeap } from "./binary.ts";
+
+describe("buildMinHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -9,14 +15,19 @@ describe("buildMinHeap", () => {
     { input: [5, 3, 17, 10, 84, 19, 6, 22, 9], output: [3, 5, 6, 9, 84, 19, 17, 22, 10] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    // eslint-disable-next-line no-new
-    new BinaryHeap((x, y) => x < y, input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      new BinaryHeap((x, y) => x < y, input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("buildMaxHeap", () => {
+describe("buildMaxHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -25,14 +36,19 @@ describe("buildMaxHeap", () => {
     { input: [5, 3, 17, 10, 84, 19, 6, 22, 9], output: [84, 22, 19, 10, 3, 17, 6, 5, 9] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    // eslint-disable-next-line no-new
-    new BinaryHeap((x, y) => x > y, input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      new BinaryHeap((x, y) => x > y, input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("peek", () => {
+describe("peek", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [1], output: { min: 1, max: 1 } },
     { input: [1, 2], output: { min: 1, max: 2 } },
@@ -41,20 +57,28 @@ describe("peek", () => {
     { input: [15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1], output: { min: 0, max: 15 } },
   ];
 
-  test.each(patterns)("%j", ({ input, output: { min } }) => {
-    const minHeap = new BinaryHeap((x, y) => x < y, input);
-    expect(minHeap.peek()).toBe(min);
-    expect(minHeap.peek()).toBe(min);
-  });
+  patterns.forEach(({ input, output: { min } }, i) =>
+    it(`min ${i}`, () => {
+      const minHeap = new BinaryHeap((x, y) => x < y, input);
+      assertEquals(minHeap.peek(), min);
+      assertEquals(minHeap.peek(), min);
+    })
+  );
 
-  test.each(patterns)("%j", ({ input, output: { max } }) => {
-    const maxHeap = new BinaryHeap((x, y) => x > y, input);
-    expect(maxHeap.peek()).toBe(max);
-    expect(maxHeap.peek()).toBe(max);
-  });
+  patterns.forEach(({ input, output: { max } }, i) =>
+    it(`max ${i}`, () => {
+      const maxHeap = new BinaryHeap((x, y) => x > y, input);
+      assertEquals(maxHeap.peek(), max);
+      assertEquals(maxHeap.peek(), max);
+    })
+  );
 });
 
-describe("pop minHeap", () => {
+describe("pop minHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [1, 2], output: { min: 1, min2: 2 } },
     { input: [2, 1], output: { min: 1, min2: 2 } },
@@ -62,14 +86,20 @@ describe("pop minHeap", () => {
     { input: [15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1], output: { min: 0, min2: 1 } },
   ];
 
-  test.each(patterns)("%j", ({ input, output: { min, min2 } }) => {
-    const minHeap = new BinaryHeap((x, y) => x < y, input);
-    expect(minHeap.pop()).toBe(min);
-    expect(minHeap.pop()).toBe(min2);
-  });
+  patterns.forEach(({ input, output: { min, min2 } }, i) =>
+    it(`${i}`, () => {
+      const minHeap = new BinaryHeap((x, y) => x < y, input);
+      assertEquals(minHeap.pop(), min);
+      assertEquals(minHeap.pop(), min2);
+    })
+  );
 });
 
-describe("pop maxHeap", () => {
+describe("pop maxHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [1, 2], output: { max: 2, max2: 1 } },
     { input: [2, 1], output: { max: 2, max2: 1 } },
@@ -77,14 +107,20 @@ describe("pop maxHeap", () => {
     { input: [15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1], output: { max: 15, max2: 13 } },
   ];
 
-  test.each(patterns)("%j", ({ input, output: { max, max2 } }) => {
-    const maxHeap = new BinaryHeap((x, y) => x > y, input);
-    expect(maxHeap.pop()).toBe(max);
-    expect(maxHeap.pop()).toBe(max2);
-  });
+  patterns.forEach(({ input, output: { max, max2 } }, i) =>
+    it(`${i}`, () => {
+      const maxHeap = new BinaryHeap((x, y) => x > y, input);
+      assertEquals(maxHeap.pop(), max);
+      assertEquals(maxHeap.pop(), max2);
+    })
+  );
 });
 
-describe("push minHeap", () => {
+describe("push minHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], key: 0 }, output: { min: 0 } },
     { input: { A: [1], key: 0 }, output: { min: 0 } },
@@ -93,14 +129,20 @@ describe("push minHeap", () => {
     { input: { A: [15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1], key: 10 }, output: { min: 0 } },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, key }, output: { min } }) => {
-    const minHeap = new BinaryHeap((x, y) => x < y, A);
-    minHeap.push(key);
-    expect(minHeap.pop()).toBe(min);
-  });
+  patterns.forEach(({ input: { A, key }, output: { min } }, i) =>
+    it(`${i}`, () => {
+      const minHeap = new BinaryHeap((x, y) => x < y, A);
+      minHeap.push(key);
+      assertEquals(minHeap.pop(), min);
+    })
+  );
 });
 
-describe("push maxHeap", () => {
+describe("push maxHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], key: 0 }, output: { max: 0 } },
     { input: { A: [1], key: 0 }, output: { max: 1 } },
@@ -109,14 +151,20 @@ describe("push maxHeap", () => {
     { input: { A: [15, 13, 9, 5, 12, 8, 7, 4, 0, 6, 2, 1], key: 10 }, output: { max: 15 } },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, key }, output: { max } }) => {
-    const maxHeap = new BinaryHeap((x, y) => x > y, A);
-    maxHeap.push(key);
-    expect(maxHeap.pop()).toBe(max);
-  });
+  patterns.forEach(({ input: { A, key }, output: { max } }, i) =>
+    it(`${i}`, () => {
+      const maxHeap = new BinaryHeap((x, y) => x > y, A);
+      maxHeap.push(key);
+      assertEquals(maxHeap.pop(), max);
+    })
+  );
 });
 
-describe("remove minHeap", () => {
+describe("remove minHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 0 }, output: [] },
     { input: { A: [1, 3, 2], i: 1 }, output: [1, 2] },
@@ -131,14 +179,20 @@ describe("remove minHeap", () => {
     },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i }, output }) => {
-    const minHeap = new BinaryHeap((x, y) => x < y, A);
-    minHeap.remove(i);
-    expect(A).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i }, output }, idx) =>
+    it(`${idx}`, () => {
+      const minHeap = new BinaryHeap((x, y) => x < y, A);
+      minHeap.remove(i);
+      assertEquals(A, output);
+    })
+  );
 });
 
-describe("remove maxHeap", () => {
+describe("remove maxHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 0 }, output: [] },
     { input: { A: [3, 1, 2], i: 1 }, output: [3, 2] },
@@ -153,14 +207,20 @@ describe("remove maxHeap", () => {
     },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i }, output }) => {
-    const maxHeap = new BinaryHeap((x, y) => x > y, A);
-    maxHeap.remove(i);
-    expect(A).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i }, output }, idx) =>
+    it(`${idx}`, () => {
+      const maxHeap = new BinaryHeap((x, y) => x > y, A);
+      maxHeap.remove(i);
+      assertEquals(A, output);
+    })
+  );
 });
 
-describe("update minHeap", () => {
+describe("update minHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 0, key: 2 }, output: [2] },
     { input: { A: [1, 3, 2], i: 1, key: 4 }, output: [1, 4, 2] },
@@ -175,14 +235,20 @@ describe("update minHeap", () => {
     },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i, key }, output }) => {
-    const minHeap = new BinaryHeap((x, y) => x < y, A);
-    minHeap.update(i, key);
-    expect(A).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i, key }, output }, idx) =>
+    it(`${idx}`, () => {
+      const minHeap = new BinaryHeap((x, y) => x < y, A);
+      minHeap.update(i, key);
+      assertEquals(A, output);
+    })
+  );
 });
 
-describe("update maxHeap", () => {
+describe("update maxHeap", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 0, key: 2 }, output: [2] },
     { input: { A: [3, 1, 2], i: 1, key: 0 }, output: [3, 0, 2] },
@@ -197,9 +263,11 @@ describe("update maxHeap", () => {
     },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i, key }, output }) => {
-    const maxHeap = new BinaryHeap((x, y) => x > y, A);
-    maxHeap.update(i, key);
-    expect(A).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i, key }, output }, idx) =>
+    it(`${idx}`, () => {
+      const maxHeap = new BinaryHeap((x, y) => x > y, A);
+      maxHeap.update(i, key);
+      assertEquals(A, output);
+    })
+  );
 });

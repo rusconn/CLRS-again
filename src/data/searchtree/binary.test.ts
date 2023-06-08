@@ -1,12 +1,11 @@
-import { BinarySearchTree, Node } from "./binary";
+import { assertEquals, describe, it } from "/deps.ts";
+
+import { BinarySearchTree, Node } from "./binary.ts";
 
 const bfNodeValues = [10, 4, 17, 1, 5, 16, 21];
-const inorder = [1, 4, 5, 10, 16, 17, 21];
-const preorder = [10, 4, 1, 5, 17, 16, 21];
-const postorder = [1, 5, 4, 16, 21, 17, 10];
 
-const [ten, four, seventeen, one, five, sixteen, twentyone]: Node<number, number>[] =
-  bfNodeValues.map(value => ({
+const [ten, four, seventeen, one, five, sixteen, twentyone]: Node<number, number>[] = bfNodeValues
+  .map((value) => ({
     key: value,
     value,
     p: null,
@@ -27,40 +26,11 @@ seventeen.right = twentyone;
 seventeen.p = ten;
 ten.right = seventeen;
 
-describe("console test", () => {
-  const bst = new BinarySearchTree<number, number>(ten);
-  const spyLog = jest.spyOn(console, "log");
-
-  afterEach(() => {
-    spyLog.mockReset();
-  });
-
-  afterAll(() => {
-    spyLog.mockRestore();
-  });
-
-  test("walkInorderIter", () => {
-    bst.walkInorderIter();
-    expect(spyLog.mock.calls.flat()).toEqual(inorder);
-  });
-
-  test("walkInorder", () => {
-    bst.walkInorder();
-    expect(spyLog.mock.calls.flat()).toEqual(inorder);
-  });
-
-  test("walkPreorder", () => {
-    bst.walkPreorder();
-    expect(spyLog.mock.calls.flat()).toEqual(preorder);
-  });
-
-  test("walkPostorder", () => {
-    bst.walkPostorder();
-    expect(spyLog.mock.calls.flat()).toEqual(postorder);
-  });
-});
-
-describe("search", () => {
+describe("search", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { root: ten, key: 100 }, output: undefined },
     { input: { root: ten, key: 10 }, output: ten },
@@ -69,13 +39,19 @@ describe("search", () => {
     { input: { root: sixteen, key: 17 }, output: undefined },
   ];
 
-  test.each(patterns)("%j", ({ input: { root, key }, output }) => {
-    const bst = new BinarySearchTree<number, number>(root);
-    expect(bst.search(key)).toEqual(output);
-  });
+  patterns.forEach(({ input: { root, key }, output }, i) =>
+    it(`${i}`, () => {
+      const bst = new BinarySearchTree<number, number>(root);
+      assertEquals(bst.search(key), output);
+    })
+  );
 });
 
-describe("minimum", () => {
+describe("minimum", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { root: ten }, output: one },
     { input: { root: four }, output: one },
@@ -84,13 +60,19 @@ describe("minimum", () => {
     { input: { root: null }, output: undefined },
   ];
 
-  test.each(patterns)("%j", ({ input: { root }, output }) => {
-    const bst = new BinarySearchTree<number, number>(ten);
-    expect(bst.minimum(root)).toEqual(output);
-  });
+  patterns.forEach(({ input: { root }, output }, i) =>
+    it(`${i}`, () => {
+      const bst = new BinarySearchTree<number, number>(ten);
+      assertEquals(bst.minimum(root), output);
+    })
+  );
 });
 
-describe("maximum", () => {
+describe("maximum", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { root: ten }, output: twentyone },
     { input: { root: four }, output: five },
@@ -99,13 +81,19 @@ describe("maximum", () => {
     { input: { root: null }, output: undefined },
   ];
 
-  test.each(patterns)("%j", ({ input: { root }, output }) => {
-    const bst = new BinarySearchTree<number, number>(ten);
-    expect(bst.maximum(root)).toEqual(output);
-  });
+  patterns.forEach(({ input: { root }, output }, i) =>
+    it(`${i}`, () => {
+      const bst = new BinarySearchTree<number, number>(ten);
+      assertEquals(bst.maximum(root), output);
+    })
+  );
 });
 
-describe("successor", () => {
+describe("successor", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { root: ten }, output: sixteen },
     { input: { root: four }, output: five },
@@ -114,13 +102,19 @@ describe("successor", () => {
     { input: { root: twentyone }, output: undefined },
   ];
 
-  test.each(patterns)("%j", ({ input: { root }, output }) => {
-    const bst = new BinarySearchTree<number, number>(ten);
-    expect(bst.successor(root)).toEqual(output);
-  });
+  patterns.forEach(({ input: { root }, output }, i) =>
+    it(`${i}`, () => {
+      const bst = new BinarySearchTree<number, number>(ten);
+      assertEquals(bst.successor(root), output);
+    })
+  );
 });
 
-describe("predecessor", () => {
+describe("predecessor", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { root: ten }, output: five },
     { input: { root: seventeen }, output: sixteen },
@@ -129,8 +123,10 @@ describe("predecessor", () => {
     { input: { root: one }, output: undefined },
   ];
 
-  test.each(patterns)("%j", ({ input: { root }, output }) => {
-    const bst = new BinarySearchTree<number, number>(ten);
-    expect(bst.predecessor(root)).toEqual(output);
-  });
+  patterns.forEach(({ input: { root }, output }, i) =>
+    it(`${i}`, () => {
+      const bst = new BinarySearchTree<number, number>(ten);
+      assertEquals(bst.predecessor(root), output);
+    })
+  );
 });

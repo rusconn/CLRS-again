@@ -1,3 +1,5 @@
+import { assertEquals, describe, it } from "/deps.ts";
+
 import {
   addBinary,
   binarySearchIterative,
@@ -15,9 +17,13 @@ import {
   mergeSortWithoutSentinel,
   polynomial,
   selectionSort,
-} from "./code";
+} from "./code.ts";
 
-describe("insertionSort", () => {
+describe("insertionSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -26,13 +32,19 @@ describe("insertionSort", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    insertionSort(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      insertionSort(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("insertionSortDesc", () => {
+describe("insertionSortDesc", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -41,13 +53,19 @@ describe("insertionSortDesc", () => {
     { input: [1, 3, 2], output: [3, 2, 1] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    insertionSortDesc(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      insertionSortDesc(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("linearSearch", () => {
+describe("linearSearch", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], v: 0 }, output: null },
     { input: { A: [1], v: 0 }, output: null },
@@ -56,12 +74,18 @@ describe("linearSearch", () => {
     { input: { A: [2, 3, 1], v: 1 }, output: 2 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, v }, output }) => {
-    expect(linearSearch(A, v)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, v }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(linearSearch(A, v), output);
+    })
+  );
 });
 
-describe("addBinary", () => {
+describe("addBinary", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [0], B: [0] }, output: [0, 0] },
     { input: { A: [1], B: [0] }, output: [0, 1] },
@@ -70,12 +94,18 @@ describe("addBinary", () => {
     { input: { A: [0, 1, 1], B: [1, 0, 1] }, output: [1, 0, 0, 0] },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, B }, output }) => {
-    expect(addBinary(A, B)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, B }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(addBinary(A, B), output);
+    })
+  );
 });
 
-describe("selectionSort", () => {
+describe("selectionSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -84,13 +114,19 @@ describe("selectionSort", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    selectionSort(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      selectionSort(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("mergeSort", () => {
+describe("mergeSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -99,13 +135,19 @@ describe("mergeSort", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    mergeSort(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      mergeSort(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("mergeSortWithoutSentinel", () => {
+describe("mergeSortWithoutSentinel", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -114,13 +156,19 @@ describe("mergeSortWithoutSentinel", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    mergeSortWithoutSentinel(input, 0, input.length - 1);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      mergeSortWithoutSentinel(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("insertionSortRecursive", () => {
+describe("insertionSortRecursive", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -129,13 +177,19 @@ describe("insertionSortRecursive", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    insertionSortRecursive(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      insertionSortRecursive(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("binarySearchIterative", () => {
+describe("binarySearchIterative", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], v: 0 }, output: null },
     { input: { A: [1], v: 0 }, output: null },
@@ -144,12 +198,18 @@ describe("binarySearchIterative", () => {
     { input: { A: [1, 2, 3], v: 3 }, output: 2 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, v }, output }) => {
-    expect(binarySearchIterative(A, v)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, v }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(binarySearchIterative(A, v), output);
+    })
+  );
 });
 
-describe("binarySearchRecursive", () => {
+describe("binarySearchRecursive", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], v: 0 }, output: null },
     { input: { A: [1], v: 0 }, output: null },
@@ -158,12 +218,18 @@ describe("binarySearchRecursive", () => {
     { input: { A: [1, 2, 3], v: 3 }, output: 2 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, v }, output }) => {
-    expect(binarySearchRecursive(A, v)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, v }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(binarySearchRecursive(A, v), output);
+    })
+  );
 });
 
-describe("hasCouple", () => {
+describe("hasCouple", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { S: [], x: 0 }, output: false },
     { input: { S: [1], x: 2 }, output: false },
@@ -172,12 +238,18 @@ describe("hasCouple", () => {
     { input: { S: [2, 1, 3], x: 2 }, output: false },
   ];
 
-  test.each(patterns)("%j", ({ input: { S, x }, output }) => {
-    expect(hasCouple(S, x)).toEqual(output);
-  });
+  patterns.forEach(({ input: { S, x }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(hasCouple(S, x), output);
+    })
+  );
 });
 
-describe("mergeSortModified", () => {
+describe("mergeSortModified", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -186,13 +258,19 @@ describe("mergeSortModified", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    mergeSortModified(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      mergeSortModified(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("bubbleSort", () => {
+describe("bubbleSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -201,13 +279,19 @@ describe("bubbleSort", () => {
     { input: [1, 3, 2], output: [1, 2, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    bubbleSort(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      bubbleSort(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("horner", () => {
+describe("horner", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], x: 4 }, output: 0 },
     { input: { A: [2], x: 4 }, output: 2 },
@@ -216,12 +300,18 @@ describe("horner", () => {
     { input: { A: [2, 1, 3], x: 5 }, output: 82 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, x }, output }) => {
-    expect(horner(A, x)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, x }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(horner(A, x), output);
+    })
+  );
 });
 
-describe("polynomial", () => {
+describe("polynomial", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], x: 4 }, output: 0 },
     { input: { A: [2], x: 4 }, output: 2 },
@@ -230,12 +320,18 @@ describe("polynomial", () => {
     { input: { A: [2, 1, 3], x: 5 }, output: 82 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, x }, output }) => {
-    expect(polynomial(A, x)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, x }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(polynomial(A, x), output);
+    })
+  );
 });
 
-describe("countInversions", () => {
+describe("countInversions", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: 0 },
     { input: [1], output: 0 },
@@ -244,7 +340,9 @@ describe("countInversions", () => {
     { input: [2, 3, 8, 6, 1], output: 5 },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    expect(countInversions(input)).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(countInversions(input), output);
+    })
+  );
 });

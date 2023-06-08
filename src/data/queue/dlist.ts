@@ -1,4 +1,4 @@
-import { DoublyLinkedList } from "@/data/list/doubly";
+import { DoublyLinkedList } from "/data/list/doubly.ts";
 
 export class DoublyLinkedListQueue<T> {
   private data;

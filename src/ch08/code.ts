@@ -1,4 +1,4 @@
-import { insertionSort } from "@/ch02/code";
+import { insertionSort } from "/ch02/code.ts";
 
 /** Θ(n+k) */
 export const countingSort = (A: readonly number[], k: number) => {

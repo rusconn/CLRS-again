@@ -1,28 +1,42 @@
-import { range } from "@/data/array";
-import { randInts } from "@/util";
-import { mergeSort } from "@/ch02/code";
-import { quickSort, randomizedQuickSort } from "./code";
+import { assertEquals, describe, it } from "/deps.ts";
 
-describe("quickSort", () => {
+import { range } from "/data/array.ts";
+import { randInts } from "/util/mod.ts";
+import { mergeSort } from "/ch02/code.ts";
+import { quickSort, randomizedQuickSort } from "./code.ts";
+
+describe("quickSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = range(5)
-    .map(_ => randInts(512, -10, 10))
-    .map(ints => ({ input: ints, input2: [...ints] }));
+    .map((_) => randInts(512, -10, 10))
+    .map((ints) => ({ input: ints, input2: [...ints] }));
 
-  test.each(patterns)("%j", ({ input, input2 }) => {
-    quickSort(input);
-    mergeSort(input2);
-    expect(input).toEqual(input2);
-  });
+  patterns.forEach(({ input, input2 }) =>
+    it(JSON.stringify({ input }), () => {
+      quickSort(input);
+      mergeSort(input2);
+      assertEquals(input, input2);
+    })
+  );
 });
 
-describe("randomizedQuickSort", () => {
+describe("randomizedQuickSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = range(5)
-    .map(_ => randInts(512, -10, 10))
-    .map(ints => ({ input: ints, input2: [...ints] }));
+    .map((_) => randInts(512, -10, 10))
+    .map((ints) => ({ input: ints, input2: [...ints] }));
 
-  test.each(patterns)("%j", ({ input, input2 }) => {
-    randomizedQuickSort(input);
-    mergeSort(input2);
-    expect(input).toEqual(input2);
-  });
+  patterns.forEach(({ input, input2 }) =>
+    it(JSON.stringify({ input }), () => {
+      randomizedQuickSort(input);
+      mergeSort(input2);
+      assertEquals(input, input2);
+    })
+  );
 });

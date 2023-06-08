@@ -1,4 +1,4 @@
-import type { Entry } from "@/data/dict/type";
+import type { Entry } from "/data/dict/type.ts";
 
 export class BuiltInArrayDict<K, V> {
   private array = Array<Entry<K, V>>();
@@ -21,7 +21,7 @@ export class BuiltInArrayDict<K, V> {
 
   /** Θ(n) */
   delete(key: K) {
-    const index = this.array.findIndex(x => x.key === key);
+    const index = this.array.findIndex((x) => x.key === key);
 
     if (index !== -1) {
       this.array.splice(index, 1);
@@ -30,6 +30,6 @@ export class BuiltInArrayDict<K, V> {
 
   /** Θ(n) */
   private searchEntry(key: K) {
-    return this.array.find(x => x.key === key);
+    return this.array.find((x) => x.key === key);
   }
 }

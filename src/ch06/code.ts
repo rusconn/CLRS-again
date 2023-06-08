@@ -1,4 +1,4 @@
-import { swap } from "@/data/array";
+import { swap } from "/data/array.ts";
 
 /** O(nlgn) */
 export const heapSort = (A: number[]) => {
@@ -22,7 +22,7 @@ const buildHeap = (A: number[]) => {
 
 /** O(lgn) */
 const downHeap = (A: number[], i: number, n = A.length) => {
-  for (let prev = -1, most = i; prev !== i; ) {
+  for (let prev = -1, most = i; prev !== i;) {
     prev = i;
 
     const [l, r] = [left(i), right(i)];

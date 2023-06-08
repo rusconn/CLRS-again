@@ -1,4 +1,4 @@
-import { swap } from "@/data/array";
+import { swap } from "/data/array.ts";
 
 export class BinaryHeap<T> {
   private heap: T[];
@@ -167,7 +167,7 @@ export class BinaryHeap<T> {
    * @param n Aのサイズ
    */
   private downHeap(A: T[], i: number, n = A.length) {
-    for (let prev = -1, most = i; prev !== i; ) {
+    for (let prev = -1, most = i; prev !== i;) {
       prev = i;
 
       const [l, r] = [BinaryHeap.left(i), BinaryHeap.right(i)];

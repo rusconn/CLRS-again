@@ -2,8 +2,8 @@
   "recommendations": [
     "davidanson.vscode-markdownlint",
     "shd101wyy.markdown-preview-enhanced",
-    "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "hediet.vscode-drawio"
+    "hediet.vscode-drawio",
+    "denoland.vscode-deno"
   ]
 }

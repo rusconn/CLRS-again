@@ -1,15 +1,15 @@
-import { range } from "@/data/array";
-import { BinaryHeapPriorityQueue } from "@/data/pqueue/binheap";
-import { BuiltInArrayPriorityQueue } from "@/data/pqueue/biarray";
-import { bench, randInts } from "@/util";
+import { range } from "/data/array.ts";
+import { BinaryHeapPriorityQueue } from "/data/pqueue/binheap.ts";
+import { BuiltInArrayPriorityQueue } from "/data/pqueue/biarray.ts";
+import { bench, randInts } from "/util/mod.ts";
 
 type Node = {
   key: number;
   val: number;
 };
 
-for (const size of range(16 + 1).map(x => 2 ** x)) {
-  const nodes = randInts(size, 0, 100).map(int => ({ key: int, val: int }));
+for (const size of range(16 + 1).map((x) => 2 ** x)) {
+  const nodes = randInts(size, 0, 100).map((int) => ({ key: int, val: int }));
 
   const binheap = () => {
     const pqueue = new BinaryHeapPriorityQueue<Node>((x, y) => x.key > y.key);

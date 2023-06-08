@@ -1,9 +1,9 @@
-import { range } from "@/data/array";
-import { bench, randInts } from "@/util";
+import { range } from "/data/array.ts";
+import { bench, randInts } from "/util/mod.ts";
 
-import { binarySearchIterative, linearSearch } from "@/ch02/code";
+import { binarySearchIterative, linearSearch } from "/ch02/code.ts";
 
-for (const size of range(24 + 1).map(x => 2 ** x)) {
+for (const size of range(24 + 1).map((x) => 2 ** x)) {
   const A = randInts(size, 0, 100);
   A.sort((x, y) => x - y);
   const v = A[A.length / 2];

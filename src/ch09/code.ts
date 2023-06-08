@@ -1,4 +1,4 @@
-import { randomizedPartition, randomizedQuickSort } from "@/ch07/code";
+import { randomizedPartition, randomizedQuickSort } from "/ch07/code.ts";
 
 /** Θ(n) (comparison among elements = 2n-2 times) */
 export const minmax = (A: readonly number[]): [number, number] => {
@@ -64,7 +64,7 @@ export const randomizedSelect = (
   A: number[],
   i: number,
   p = 0,
-  r = A.length - 1
+  r = A.length - 1,
 ): typeof A[number] => {
   if (p === r) {
     return A[p];
@@ -77,7 +77,7 @@ export const randomizedSelect = (
     return A[q];
   }
 
-  // prettier-ignore
+  // deno-fmt-ignore
   return i < k
     ? randomizedSelect(A, i, p, q - 1)
     : randomizedSelect(A, i - k, q + 1, r);

@@ -1,19 +1,33 @@
-import { range } from "@/data/array";
-import { randInts } from "@/util";
-import { mergeSort } from "@/ch02/code";
-import { countingSort, countIntervalNaive, countIntervalByRanking, bucketSort } from "./code";
+import { assertEquals, describe, it } from "/deps.ts";
 
-describe("countingSort", () => {
-  const patterns = range(5).map(_ => ({ input: randInts(10, 0, 10) }));
+import { range } from "/data/array.ts";
+import { randInts } from "/util/mod.ts";
+import { mergeSort } from "/ch02/code.ts";
+import { bucketSort, countingSort, countIntervalByRanking, countIntervalNaive } from "./code.ts";
 
-  test.each(patterns)("%j", ({ input }) => {
-    const output = countingSort(input, 10);
-    mergeSort(input);
-    expect(output).toEqual(input);
-  });
+describe("countingSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
+  const patterns = range(5).map((_) => ({
+    input: randInts(10, 0, 10),
+  }));
+
+  patterns.forEach(({ input }) =>
+    it(JSON.stringify({ input }), () => {
+      const output = countingSort(input, 10);
+      mergeSort(input);
+      assertEquals(output, input);
+    })
+  );
 });
 
-describe("countIntervalNaive and countIntervalByRanking", () => {
+describe("countIntervalNaive and countIntervalByRanking", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], k: 1, a: 3, b: -3 }, output: 0 },
     { input: { A: [1], k: 1, a: -3, b: -1 }, output: 0 },
@@ -30,20 +44,28 @@ describe("countIntervalNaive and countIntervalByRanking", () => {
     { input: { A: [1, 2, 3, 4, 6, 2, 4, 0, 8, 0, 3], k: 10, a: 8, b: 12 }, output: 1 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, k, a, b }, output }) => {
-    expect(countIntervalNaive(A, a, b)).toEqual(output);
-    expect(countIntervalByRanking(A, k, a, b)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, k, a, b }, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(countIntervalNaive(A, a, b), output);
+      assertEquals(countIntervalByRanking(A, k, a, b), output);
+    })
+  );
 });
 
-describe("bucketSort", () => {
-  const patterns = range(5).map(_ => ({
-    input: range(5).map(__ => Math.random()),
+describe("bucketSort", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
+  const patterns = range(5).map((_) => ({
+    input: range(5).map((__) => Math.random()),
   }));
 
-  test.each(patterns)("%j", ({ input }) => {
-    const output = bucketSort(input);
-    mergeSort(input);
-    expect(output).toEqual(input);
-  });
+  patterns.forEach(({ input }) =>
+    it(JSON.stringify({ input }), () => {
+      const output = bucketSort(input);
+      mergeSort(input);
+      assertEquals(output, input);
+    })
+  );
 });

@@ -1,4 +1,4 @@
-import { BinaryHeap } from "@/data/heap/binary";
+import { BinaryHeap } from "/data/heap/binary.ts";
 
 export class BinaryHeapPriorityQueue<T> {
   private heap;

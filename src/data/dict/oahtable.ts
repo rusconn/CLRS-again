@@ -1,4 +1,4 @@
-import type { Entry } from "@/data/dict/type";
+import type { Entry } from "/data/dict/type.ts";
 
 /**
  * Fixed size open addressing hash table dictionary.

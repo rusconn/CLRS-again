@@ -1,4 +1,4 @@
-import { ArrayQueue } from "@/data/queue/array";
+import { ArrayQueue } from "/data/queue/array.ts";
 
 /**
  * A stack implementation using two queues.

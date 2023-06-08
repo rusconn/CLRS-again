@@ -1,6 +1,12 @@
-import { minmax, minmaxByPairing, randomizedSelect, select } from "./code";
+import { assertEquals, describe, it } from "/deps.ts";
 
-describe("minmax", () => {
+import { minmax, minmaxByPairing, randomizedSelect, select } from "./code.ts";
+
+describe("minmax", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [1], output: [1, 1] },
     { input: [1, 2], output: [1, 2] },
@@ -9,12 +15,18 @@ describe("minmax", () => {
     { input: [2, 0, 1, 0, 2], output: [0, 2] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    expect(minmax(input)).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(minmax(input), output);
+    })
+  );
 });
 
-describe("minmaxByPairing", () => {
+describe("minmaxByPairing", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [1], output: [1, 1] },
     { input: [1, 2], output: [1, 2] },
@@ -23,12 +35,18 @@ describe("minmaxByPairing", () => {
     { input: [2, 0, 1, 0, 2], output: [0, 2] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    expect(minmaxByPairing(input)).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      assertEquals(minmaxByPairing(input), output);
+    })
+  );
 });
 
-describe("select", () => {
+describe("select", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 1 }, output: 1 },
     { input: { A: [1, 2], i: 1 }, output: 1 },
@@ -37,12 +55,18 @@ describe("select", () => {
     { input: { A: [2, 0, 1], i: 2 }, output: 1 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i }, output }) => {
-    expect(select(A, i)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i }, output }, idx) =>
+    it(`${idx}`, () => {
+      assertEquals(select(A, i), output);
+    })
+  );
 });
 
-describe("randomizedSelect", () => {
+describe("randomizedSelect", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [1], i: 1 }, output: 1 },
     { input: { A: [1, 2], i: 1 }, output: 1 },
@@ -51,7 +75,9 @@ describe("randomizedSelect", () => {
     { input: { A: [2, 0, 1], i: 2 }, output: 1 },
   ];
 
-  test.each(patterns)("%j", ({ input: { A, i }, output }) => {
-    expect(randomizedSelect(A, i)).toEqual(output);
-  });
+  patterns.forEach(({ input: { A, i }, output }, idx) =>
+    it(`${idx}`, () => {
+      assertEquals(randomizedSelect(A, i), output);
+    })
+  );
 });

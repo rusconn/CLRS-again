@@ -1,13 +1,13 @@
-import { range } from "@/data/array";
-import { BinaryHeapStack } from "@/data/stack/binheap";
-import { ArrayDequeStack } from "@/data/stack/adeque";
-import { ArrayStack } from "@/data/stack/array";
-import { BuiltInArrayStack } from "@/data/stack/biarray";
-import { DoublyLinkedListStack } from "@/data/stack/dlist";
-import { SinglyLinkedListStack } from "@/data/stack/slist";
-import { bench } from "@/util";
+import { range } from "/data/array.ts";
+import { BinaryHeapStack } from "/data/stack/binheap.ts";
+import { ArrayDequeStack } from "/data/stack/adeque.ts";
+import { ArrayStack } from "/data/stack/array.ts";
+import { BuiltInArrayStack } from "/data/stack/biarray.ts";
+import { DoublyLinkedListStack } from "/data/stack/dlist.ts";
+import { SinglyLinkedListStack } from "/data/stack/slist.ts";
+import { bench } from "/util/mod.ts";
 
-for (const size of range(23 + 1).map(x => 2 ** x)) {
+for (const size of range(23 + 1).map((x) => 2 ** x)) {
   const binheap = () => {
     const S = new BinaryHeapStack<number>();
     for (let i = 0; i < size; i++) S.push(i);

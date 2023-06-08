@@ -1,0 +1,14 @@
+{
+  "tasks": {
+    "bench": "deno run --allow-hrtime"
+  },
+  "fmt": {
+    // prettierを使う
+    "exclude": ["**/*.md"],
+    "lineWidth": 100
+  },
+  "imports": {
+    "/": "./src/",
+    "./": "./"
+  }
+}

@@ -123,8 +123,6 @@ export class DoublyLinkedList<T> {
     return x.val;
   }
 
-  /* eslint-disable class-methods-use-this */
-
   /** O(1) */
   insertBefore(x: Node<T>, val: T) {
     const node = {
@@ -163,8 +161,6 @@ export class DoublyLinkedList<T> {
       this.delete(node);
     }
   }
-
-  /* eslint-enable class-methods-use-this */
 
   /** O(1) */
   deleteBefore(x: Node<T>) {
@@ -212,7 +208,6 @@ export class DoublyLinkedList<T> {
     this.rev(this.nil);
   }
 
-  // eslint-disable-next-line class-methods-use-this
   private rev(x: Node<T>) {
     const { prev, next } = x;
     x.prev = next;

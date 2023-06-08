@@ -1,4 +1,4 @@
-import { SinglyLinkedList } from "@/data/list/singly";
+import { SinglyLinkedList } from "/data/list/singly.ts";
 
 export class SinglyLinkedListStack<T> {
   private data;

@@ -1,4 +1,4 @@
-import { ArrayStack } from "@/data/stack/array";
+import { ArrayStack } from "/data/stack/array.ts";
 
 export type BinTree<T> = {
   root: BinTreeNode<T> | null;

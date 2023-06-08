@@ -1,5 +1,12 @@
 {
-  "typescript.tsdk": "node_modules/typescript/lib",
+  "deno.enable": true,
+  "editor.formatOnSave": true,
   "markdown-preview-enhanced.previewTheme": "github-dark.css",
-  "markdown-preview-enhanced.mathRenderingOption": "MathJax"
+  "markdown-preview-enhanced.mathRenderingOption": "MathJax",
+  "[typescript]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  }
 }

@@ -22,4 +22,4 @@
 
 ## セットアップ
 
-[VOLTA](https://volta.sh/)を使う。
+[Deno](https://deno.com/runtime)を使う。

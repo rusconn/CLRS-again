@@ -1,5 +1,5 @@
-import type { Entry } from "@/data/dict/type";
-import { DoublyLinkedList } from "@/data/list/doubly";
+import type { Entry } from "/data/dict/type.ts";
+import { DoublyLinkedList } from "/data/list/doubly.ts";
 
 /**
  * Fixed size chaining hash table dictionary.
@@ -16,7 +16,7 @@ export class ChainingHashTableDict<K, V> {
   search(key: K) {
     const hash = this.hasher(key);
     const list = this.table[hash];
-    return list?.searchBy(key, x => x.key)?.val.value;
+    return list?.searchBy(key, (x) => x.key)?.val.value;
   }
 
   /** O(1) (if the hasher hashes simple uniformly) */
@@ -29,7 +29,7 @@ export class ChainingHashTableDict<K, V> {
       newList.pushHead({ key, value });
       this.table[hash] = newList;
     } else {
-      const sameKeyNode = list.searchBy(key, x => x.key);
+      const sameKeyNode = list.searchBy(key, (x) => x.key);
 
       // upsert
       if (sameKeyNode != null) {
@@ -44,6 +44,6 @@ export class ChainingHashTableDict<K, V> {
   delete(key: K) {
     const hash = this.hasher(key);
     const list = this.table[hash];
-    list?.deleteBy(key, x => x.key);
+    list?.deleteBy(key, (x) => x.key);
   }
 }

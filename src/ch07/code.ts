@@ -1,6 +1,6 @@
-import { swap } from "@/data/array";
-import { randInt } from "@/util";
-import { insertionSortForModify } from "@/ch02/code";
+import { swap } from "/data/array.ts";
+import { randInt } from "/util/mod.ts";
+import { insertionSortForModify } from "/ch02/code.ts";
 
 /** worst: Θ(n^2), best: Θ(nlgn), average: Θ(nlgn) */
 export const quickSort = (A: number[], p = 0, r = A.length - 1) => {

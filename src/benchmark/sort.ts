@@ -1,5 +1,5 @@
-import { range } from "@/data/array";
-import { bench, randInts } from "@/util";
+import { range } from "/data/array.ts";
+import { bench, randInts } from "/util/mod.ts";
 
 import {
   bubbleSort,
@@ -8,12 +8,12 @@ import {
   mergeSortModified,
   mergeSortWithoutSentinel,
   selectionSort,
-} from "@/ch02/code";
-import { heapSort } from "@/ch06/code";
-import { quickSort, randomizedQuickSort } from "@/ch07/code";
-import { bucketSort, countingSort } from "@/ch08/code";
+} from "/ch02/code.ts";
+import { heapSort } from "/ch06/code.ts";
+import { quickSort, randomizedQuickSort } from "/ch07/code.ts";
+import { bucketSort, countingSort } from "/ch08/code.ts";
 
-for (const size of range(16 + 1).map(x => 2 ** x)) {
+for (const size of range(16 + 1).map((x) => 2 ** x)) {
   const ints = randInts(size, 1, size);
 
   const intsForInsertion = [...ints];
@@ -27,7 +27,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   const intsForRandQuick = [...ints];
   const intsForBuiltin = [...ints];
   const intsForCounting = [...ints];
-  const numsForBucket = [...ints].map(int => (int - 1) / size);
+  const numsForBucket = [...ints].map((int) => (int - 1) / size);
 
   const insertion = () => insertionSort(intsForInsertion);
   const selection = () => selectionSort(intsForSelection);

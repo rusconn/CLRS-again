@@ -1,63 +1,55 @@
-import { ArrayDeque } from "./array";
-import { DoublyLinkedListDeque } from "./dlist";
-import { SinglyLinkedListDeque } from "./slist";
+import { assert, assertEquals, assertFalse, assertThrows, describe, it } from "/deps.ts";
+import { ArrayDeque } from "./array.ts";
+import { DoublyLinkedListDeque } from "./dlist.ts";
+import { SinglyLinkedListDeque } from "./slist.ts";
 
-describe("operations", () => {
+describe("operations", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const deques = [
     { deque: new ArrayDeque<number>(3) },
     { deque: new DoublyLinkedListDeque<number>() },
     { deque: new SinglyLinkedListDeque<number>() },
   ];
 
-  test.each(deques)("deque No.%#", ({ deque }) => {
-    expect(deque.empty()).toBe(true);
+  deques.forEach(({ deque }, i) =>
+    it(`${i}`, () => {
+      assert(deque.empty());
 
-    expect(() => {
-      deque.popHead();
-    }).toThrowError("underflow.");
+      assertThrows(() => deque.popHead(), Error, "underflow.");
+      assertThrows(() => deque.popTail(), Error, "underflow.");
 
-    expect(() => {
-      deque.popTail();
-    }).toThrowError("underflow.");
+      deque.pushTail(1);
+      deque.pushTail(2);
+      deque.pushTail(3);
 
-    deque.pushTail(1);
-    deque.pushTail(2);
-    deque.pushTail(3);
+      assertFalse(deque.empty());
 
-    expect(deque.empty()).toBe(false);
+      assertEquals(deque.popHead(), 1);
+      assertEquals(deque.popTail(), 3);
+      assertEquals(deque.popTail(), 2);
 
-    expect(deque.popHead()).toBe(1);
-    expect(deque.popTail()).toBe(3);
-    expect(deque.popTail()).toBe(2);
+      assert(deque.empty());
 
-    expect(deque.empty()).toBe(true);
+      assertThrows(() => deque.popHead(), Error, "underflow.");
+      assertThrows(() => deque.popTail(), Error, "underflow.");
 
-    expect(() => {
-      deque.popHead();
-    }).toThrowError("underflow.");
+      deque.pushHead(1);
+      deque.pushHead(2);
+      deque.pushHead(3);
 
-    expect(() => {
-      deque.popTail();
-    }).toThrowError("underflow.");
+      assertFalse(deque.empty());
 
-    deque.pushHead(1);
-    deque.pushHead(2);
-    deque.pushHead(3);
+      assertEquals(deque.popTail(), 1);
+      assertEquals(deque.popHead(), 3);
+      assertEquals(deque.popHead(), 2);
 
-    expect(deque.empty()).toBe(false);
+      assert(deque.empty());
 
-    expect(deque.popTail()).toBe(1);
-    expect(deque.popHead()).toBe(3);
-    expect(deque.popHead()).toBe(2);
-
-    expect(deque.empty()).toBe(true);
-
-    expect(() => {
-      deque.popHead();
-    }).toThrowError("underflow.");
-
-    expect(() => {
-      deque.popTail();
-    }).toThrowError("underflow.");
-  });
+      assertThrows(() => deque.popHead(), Error, "underflow.");
+      assertThrows(() => deque.popTail(), Error, "underflow.");
+    })
+  );
 });

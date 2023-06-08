@@ -134,7 +134,6 @@ export class SinglyLinkedList<T> {
   }
 
   /** O(1) */
-  // eslint-disable-next-line class-methods-use-this
   insertAfter(x: Node<T>, val: T) {
     const node = { val, next: x.next };
     x.next = node;

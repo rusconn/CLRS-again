@@ -1,4 +1,4 @@
-import { swap } from "@/data/array";
+import { swap } from "/data/array.ts";
 
 /** worst: Θ(n^2), best: Θ(n), average: Θ(n^2) */
 const isort = (cmp: (x: number, y: number) => boolean) => (A: number[]) => {
@@ -153,7 +153,7 @@ export const binarySearchIterative = (
   A: readonly number[],
   v: typeof A[number],
   i = 0,
-  j = A.length - 1
+  j = A.length - 1,
 ) => {
   while (i <= j) {
     const mid = Math.floor((i + j) / 2);
@@ -177,7 +177,7 @@ export const binarySearchRecursive = (
   A: readonly number[],
   v: typeof A[number],
   i = 0,
-  j = A.length - 1
+  j = A.length - 1,
 ): number | null => {
   if (i > j) {
     return null;

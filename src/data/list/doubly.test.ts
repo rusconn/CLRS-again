@@ -1,47 +1,71 @@
-import { DoublyLinkedList } from "./doubly";
+import { assert, assertEquals, assertFalse, assertThrows, describe, it } from "/deps.ts";
 
-describe("fromArray consumes the array", () => {
+import { DoublyLinkedList } from "./doubly.ts";
+
+describe("fromArray consumes the array", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [] },
     { input: [1, 2], output: [] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    DoublyLinkedList.fromArray(input);
-    expect(input).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      DoublyLinkedList.fromArray(input);
+      assertEquals(input, output);
+    })
+  );
 });
 
-describe("intoArray consumes the list", () => {
+describe("intoArray consumes the list", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [] },
     { input: [1, 2], output: [] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    const L = DoublyLinkedList.fromArray(input);
-    L.intoArray();
-    const array = L.intoArray();
-    expect(array).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      const L = DoublyLinkedList.fromArray(input);
+      L.intoArray();
+      const array = L.intoArray();
+      assertEquals(array, output);
+    })
+  );
 });
 
-describe("intoArray . fromArray is identity", () => {
+describe("intoArray . fromArray is identity", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
     { input: [1, 2], output: [1, 2] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    const L = DoublyLinkedList.fromArray(input);
-    expect(L.intoArray()).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      const L = DoublyLinkedList.fromArray(input);
+      assertEquals(L.intoArray(), output);
+    })
+  );
 });
 
-describe("search", () => {
+describe("search", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const existPatterns = [
     { input: { A: [1], val: 1 }, output: { val: 1 } },
     { input: { A: [3, 1, 2], val: 3 }, output: { val: 3 } },
@@ -56,18 +80,26 @@ describe("search", () => {
     { input: { A: [3, 1, 2], val: 4 }, output: undefined },
   ];
 
-  test.each(existPatterns)("%j", ({ input: { A, val }, output }) => {
-    const L = DoublyLinkedList.fromArray(A);
-    expect(L.search(val)?.val).toEqual(output.val);
-  });
+  existPatterns.forEach(({ input: { A, val }, output }, i) =>
+    it(`exist ${i}`, () => {
+      const L = DoublyLinkedList.fromArray(A);
+      assertEquals(L.search(val)?.val, output.val);
+    })
+  );
 
-  test.each(notExistPatterns)("%j", ({ input: { A, val }, output }) => {
-    const L = DoublyLinkedList.fromArray(A);
-    expect(L.search(val)).toBe(output);
-  });
+  notExistPatterns.forEach(({ input: { A, val }, output }, i) =>
+    it(`not exist ${i}`, () => {
+      const L = DoublyLinkedList.fromArray(A);
+      assertEquals(L.search(val), output);
+    })
+  );
 });
 
-describe("searchBy", () => {
+describe("searchBy", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   type User = { id: number; name: string };
   const foo: User = { id: 1, name: "foo" };
   const bar: User = { id: 2, name: "bar" };
@@ -85,18 +117,26 @@ describe("searchBy", () => {
     { input: { A: [foo, bar], key: foo.name, toKey: toName }, output: foo },
   ];
 
-  test.each(eqByIdPatterns)("%j", ({ input: { A, key, toKey }, output }) => {
-    const L = DoublyLinkedList.fromArray(A);
-    expect(L.searchBy(key, toKey)?.val).toEqual(output);
-  });
+  eqByIdPatterns.forEach(({ input: { A, key, toKey }, output }, i) =>
+    it(`id ${i}`, () => {
+      const L = DoublyLinkedList.fromArray(A);
+      assertEquals(L.searchBy(key, toKey)?.val, output);
+    })
+  );
 
-  test.each(eqByNameEqPatterns)("%j", ({ input: { A, key, toKey }, output }) => {
-    const L = DoublyLinkedList.fromArray(A);
-    expect(L.searchBy(key, toKey)?.val).toEqual(output);
-  });
+  eqByNameEqPatterns.forEach(({ input: { A, key, toKey }, output }, i) =>
+    it(`name ${i}`, () => {
+      const L = DoublyLinkedList.fromArray(A);
+      assertEquals(L.searchBy(key, toKey)?.val, output);
+    })
+  );
 });
 
-describe("reverse", () => {
+describe("reverse", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
@@ -104,29 +144,41 @@ describe("reverse", () => {
     { input: [3, 1, 2], output: [2, 1, 3] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    const L = DoublyLinkedList.fromArray(input);
-    L.reverse();
-    expect(L.intoArray()).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      const L = DoublyLinkedList.fromArray(input);
+      L.reverse();
+      assertEquals(L.intoArray(), output);
+    })
+  );
 });
 
-describe("reverse . reverse is identity", () => {
+describe("reverse . reverse is identity", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: [], output: [] },
     { input: [1], output: [1] },
     { input: [1, 2], output: [1, 2] },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    const L = DoublyLinkedList.fromArray(input);
-    L.reverse();
-    L.reverse();
-    expect(L.intoArray()).toEqual(output);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      const L = DoublyLinkedList.fromArray(input);
+      L.reverse();
+      L.reverse();
+      assertEquals(L.intoArray(), output);
+    })
+  );
 });
 
-describe("merge", () => {
+describe("merge", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const patterns = [
     { input: { A: [], B: [] }, output: { A: [], B: [] } },
     { input: { A: [], B: [1] }, output: { A: [1], B: [] } },
@@ -135,123 +187,125 @@ describe("merge", () => {
     { input: { A: [4, 5, 6], B: [1, 2, 3] }, output: { A: [4, 5, 6, 1, 2, 3], B: [] } },
   ];
 
-  test.each(patterns)("%j", ({ input, output }) => {
-    const A = DoublyLinkedList.fromArray(input.A);
-    const B = DoublyLinkedList.fromArray(input.B);
-    A.merge(B);
-    expect(A.intoArray()).toEqual(output.A);
-    expect(B.intoArray()).toEqual(output.B);
-  });
+  patterns.forEach(({ input, output }, i) =>
+    it(`${i}`, () => {
+      const A = DoublyLinkedList.fromArray(input.A);
+      const B = DoublyLinkedList.fromArray(input.B);
+      A.merge(B);
+      assertEquals(A.intoArray(), output.A);
+      assertEquals(B.intoArray(), output.B);
+    })
+  );
 });
 
-describe("stack operations at head", () => {
+describe("stack operations at head", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const L = new DoublyLinkedList<number>();
 
-  expect(L.empty()).toBe(true);
+  assert(L.empty());
 
-  expect(() => {
-    L.popHead();
-  }).toThrowError("underflow.");
+  assertThrows(() => L.popHead(), Error, "underflow.");
 
   L.pushHead(1);
 
-  expect(L.empty()).toBe(false);
-  expect(L.popHead()).toBe(1);
-  expect(L.empty()).toBe(true);
-
-  L.pushHead(1);
-  L.pushHead(2);
-
-  expect(L.empty()).toBe(false);
-  expect(L.popHead()).toBe(2);
-  expect(L.popHead()).toBe(1);
-  expect(L.empty()).toBe(true);
-
-  expect(() => {
-    L.popHead();
-  }).toThrowError("underflow.");
-});
-
-describe("stack operations at tail", () => {
-  const L = new DoublyLinkedList<number>();
-
-  expect(L.empty()).toBe(true);
-
-  expect(() => {
-    L.popTail();
-  }).toThrowError("underflow.");
-
-  L.pushTail(1);
-
-  expect(L.empty()).toBe(false);
-  expect(L.popTail()).toBe(1);
-  expect(L.empty()).toBe(true);
-
-  L.pushTail(1);
-  L.pushTail(2);
-
-  expect(L.empty()).toBe(false);
-  expect(L.popTail()).toBe(2);
-  expect(L.popTail()).toBe(1);
-  expect(L.empty()).toBe(true);
-
-  expect(() => {
-    L.popTail();
-  }).toThrowError("underflow.");
-});
-
-describe("queue operations from head to tail", () => {
-  const L = new DoublyLinkedList<number>();
-
-  expect(L.empty()).toBe(true);
-
-  expect(() => {
-    L.popTail();
-  }).toThrowError("underflow.");
-
-  L.pushHead(1);
-
-  expect(L.empty()).toBe(false);
-  expect(L.popTail()).toBe(1);
-  expect(L.empty()).toBe(true);
+  assertFalse(L.empty());
+  assertEquals(L.popHead(), 1);
+  assert(L.empty());
 
   L.pushHead(1);
   L.pushHead(2);
 
-  expect(L.empty()).toBe(false);
-  expect(L.popTail()).toBe(1);
-  expect(L.popTail()).toBe(2);
-  expect(L.empty()).toBe(true);
+  assertFalse(L.empty());
+  assertEquals(L.popHead(), 2);
+  assertEquals(L.popHead(), 1);
+  assert(L.empty());
 
-  expect(() => {
-    L.popTail();
-  }).toThrowError("underflow.");
+  assertThrows(() => L.popHead(), Error, "underflow.");
 });
 
-describe("queue operations from tail to head", () => {
+describe("stack operations at tail", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const L = new DoublyLinkedList<number>();
 
-  expect(L.empty()).toBe(true);
+  assert(L.empty());
 
-  expect(() => {
-    L.popHead();
-  }).toThrowError("underflow.");
+  assertThrows(() => L.popTail(), Error, "underflow.");
 
   L.pushTail(1);
 
-  expect(L.empty()).toBe(false);
-  expect(L.popHead()).toBe(1);
-  expect(L.empty()).toBe(true);
+  assertFalse(L.empty());
+  assertEquals(L.popTail(), 1);
+  assert(L.empty());
 
   L.pushTail(1);
   L.pushTail(2);
 
-  expect(L.empty()).toBe(false);
-  expect(L.popHead()).toBe(1);
-  expect(L.popHead()).toBe(2);
-  expect(L.empty()).toBe(true);
+  assertFalse(L.empty());
+  assertEquals(L.popTail(), 2);
+  assertEquals(L.popTail(), 1);
+  assert(L.empty());
 
-  expect(() => {
-    L.popHead();
-  }).toThrowError("underflow.");
+  assertThrows(() => L.popTail(), Error, "underflow.");
+});
+
+describe("queue operations from head to tail", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
+  const L = new DoublyLinkedList<number>();
+
+  assert(L.empty());
+
+  assertThrows(() => L.popTail(), Error, "underflow.");
+
+  L.pushHead(1);
+
+  assertFalse(L.empty());
+  assertEquals(L.popTail(), 1);
+  assert(L.empty());
+
+  L.pushHead(1);
+  L.pushHead(2);
+
+  assertFalse(L.empty());
+  assertEquals(L.popTail(), 1);
+  assertEquals(L.popTail(), 2);
+  assert(L.empty());
+
+  assertThrows(() => L.popTail(), Error, "underflow.");
+});
+
+describe("queue operations from tail to head", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
+  const L = new DoublyLinkedList<number>();
+
+  assert(L.empty());
+
+  assertThrows(() => L.popHead(), Error, "underflow.");
+
+  L.pushTail(1);
+
+  assertFalse(L.empty());
+  assertEquals(L.popHead(), 1);
+  assert(L.empty());
+
+  L.pushTail(1);
+  L.pushTail(2);
+
+  assertFalse(L.empty());
+  assertEquals(L.popHead(), 1);
+  assertEquals(L.popHead(), 2);
+  assert(L.empty());
+
+  assertThrows(() => L.popHead(), Error, "underflow.");
 });

@@ -1,10 +1,10 @@
-import { range } from "@/data/array";
-import { ArrayDeque } from "@/data/deque/array";
-import { DoublyLinkedListDeque } from "@/data/deque/dlist";
-import { SinglyLinkedListDeque } from "@/data/deque/slist";
-import { bench } from "@/util";
+import { range } from "/data/array.ts";
+import { ArrayDeque } from "/data/deque/array.ts";
+import { DoublyLinkedListDeque } from "/data/deque/dlist.ts";
+import { SinglyLinkedListDeque } from "/data/deque/slist.ts";
+import { bench } from "/util/mod.ts";
 
-for (const size of range(17 + 1).map(x => 2 ** x)) {
+for (const size of range(17 + 1).map((x) => 2 ** x)) {
   const array = () => {
     const Q = new ArrayDeque<number>(size);
     for (let i = 0; i < size; i++) Q.pushHead(i);

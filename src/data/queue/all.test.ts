@@ -1,12 +1,18 @@
-import { BinaryHeapQueue } from "./binheap";
-import { ArrayDequeQueue } from "./adeque";
-import { ArrayQueue } from "./array";
-import { ArrayStackQueue } from "./astack";
-import { BuiltInArrayQueue } from "./biarray";
-import { DoublyLinkedListQueue } from "./dlist";
-import { SinglyLinkedListQueue } from "./slist";
+import { assert, assertEquals, describe, it } from "/deps.ts";
 
-describe("enqueue and dequeue", () => {
+import { BinaryHeapQueue } from "./binheap.ts";
+import { ArrayDequeQueue } from "./adeque.ts";
+import { ArrayQueue } from "./array.ts";
+import { ArrayStackQueue } from "./astack.ts";
+import { BuiltInArrayQueue } from "./biarray.ts";
+import { DoublyLinkedListQueue } from "./dlist.ts";
+import { SinglyLinkedListQueue } from "./slist.ts";
+
+describe("enqueue and dequeue", {
+  sanitizeOps: false,
+  sanitizeResources: false,
+  sanitizeExit: false,
+}, () => {
   const queues = [
     { queue: new BinaryHeapQueue<number>() },
     { queue: new ArrayDequeQueue<number>(2) },
@@ -17,23 +23,25 @@ describe("enqueue and dequeue", () => {
     { queue: new SinglyLinkedListQueue<number>() },
   ];
 
-  test.each(queues)("queue No.%#", ({ queue }) => {
-    queue.enqueue(1);
+  queues.forEach(({ queue }, i) =>
+    it(`${i}`, () => {
+      queue.enqueue(1);
 
-    expect(queue.dequeue()).toBe(1);
+      assertEquals(queue.dequeue(), 1);
 
-    queue.enqueue(2);
-    queue.enqueue(3);
+      queue.enqueue(2);
+      queue.enqueue(3);
 
-    expect(queue.dequeue()).toBe(2);
-    expect(queue.dequeue()).toBe(3);
+      assertEquals(queue.dequeue(), 2);
+      assertEquals(queue.dequeue(), 3);
 
-    queue.enqueue(4);
-    queue.enqueue(5);
+      queue.enqueue(4);
+      queue.enqueue(5);
 
-    expect(queue.dequeue()).toBe(4);
-    expect(queue.dequeue()).toBe(5);
+      assertEquals(queue.dequeue(), 4);
+      assertEquals(queue.dequeue(), 5);
 
-    expect(queue.empty()).toBe(true);
-  });
+      assert(queue.empty());
+    })
+  );
 });

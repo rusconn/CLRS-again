@@ -1,4 +1,4 @@
-import { ArrayDeque } from "@/data/deque/array";
+import { ArrayDeque } from "/data/deque/array.ts";
 
 export class ArrayDequeStack<T> {
   private data;

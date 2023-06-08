@@ -1,19 +1,19 @@
-import { range } from "@/data/array";
-import { BuiltInArrayDict } from "@/data/dict/biarray";
-import { BuiltInMapDict } from "@/data/dict/bimap";
-import { BuiltInObjectDict } from "@/data/dict/biobject";
-import { ChainingHashTableDict } from "@/data/dict/chtable";
-import { DirectAddressTableDict } from "@/data/dict/datable";
-import { OpenAddressingHashTableDict } from "@/data/dict/oahtable";
-import { bench } from "@/util";
+import { range } from "/data/array.ts";
+import { BuiltInArrayDict } from "/data/dict/biarray.ts";
+import { BuiltInMapDict } from "/data/dict/bimap.ts";
+import { BuiltInObjectDict } from "/data/dict/biobject.ts";
+import { ChainingHashTableDict } from "/data/dict/chtable.ts";
+import { DirectAddressTableDict } from "/data/dict/datable.ts";
+import { OpenAddressingHashTableDict } from "/data/dict/oahtable.ts";
+import { bench } from "/util/mod.ts";
 
 type User = {
   id: number;
   name: string;
 };
 
-for (const size of range(16 + 1).map(x => 2 ** x)) {
-  const users = range(size).map(n => ({ id: n, name: `user${n}` }));
+for (const size of range(16 + 1).map((x) => 2 ** x)) {
+  const users = range(size).map((n) => ({ id: n, name: `user${n}` }));
 
   const biarray = () => {
     const D = new BuiltInArrayDict<User["id"], User>();
@@ -43,7 +43,7 @@ for (const size of range(16 + 1).map(x => 2 ** x)) {
   };
 
   const chtable = () => {
-    const D = new ChainingHashTableDict<User["id"], User>(x => x % Math.floor(size / 3));
+    const D = new ChainingHashTableDict<User["id"], User>((x) => x % Math.floor(size / 3));
     for (let i = 0; i < size; i++) D.insert(users[i].id, users[i]);
     for (let i = 0; i < size; i++) {
       const searched = D.search(users[i].id) as User;

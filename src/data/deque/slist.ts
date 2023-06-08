@@ -1,4 +1,4 @@
-import { SinglyLinkedList } from "@/data/list/singly";
+import { SinglyLinkedList } from "/data/list/singly.ts";
 
 export class SinglyLinkedListDeque<T> {
   private list = new SinglyLinkedList<T>();

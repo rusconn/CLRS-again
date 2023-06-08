@@ -1,13 +1,13 @@
-import { range } from "@/data/array";
-import { BinaryHeapQueue } from "@/data/queue/binheap";
-import { ArrayDequeQueue } from "@/data/queue/adeque";
-import { ArrayQueue } from "@/data/queue/array";
-import { BuiltInArrayQueue } from "@/data/queue/biarray";
-import { DoublyLinkedListQueue } from "@/data/queue/dlist";
-import { SinglyLinkedListQueue } from "@/data/queue/slist";
-import { bench } from "@/util";
+import { range } from "/data/array.ts";
+import { BinaryHeapQueue } from "/data/queue/binheap.ts";
+import { ArrayDequeQueue } from "/data/queue/adeque.ts";
+import { ArrayQueue } from "/data/queue/array.ts";
+import { BuiltInArrayQueue } from "/data/queue/biarray.ts";
+import { DoublyLinkedListQueue } from "/data/queue/dlist.ts";
+import { SinglyLinkedListQueue } from "/data/queue/slist.ts";
+import { bench } from "/util/mod.ts";
 
-for (const size of range(18 + 1).map(x => 2 ** x)) {
+for (const size of range(18 + 1).map((x) => 2 ** x)) {
   const binheap = () => {
     const Q = new BinaryHeapQueue<number>();
     for (let i = 0; i < size; i++) Q.enqueue(i);

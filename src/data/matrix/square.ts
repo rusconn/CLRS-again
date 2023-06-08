@@ -1,4 +1,4 @@
-import * as Mat from "./matrix";
+import * as Mat from "./matrix.ts";
 
 export type Mut<T> = Mat.Mut<T>;
 export type Imu<T> = Mat.Imu<T>;
@@ -16,7 +16,7 @@ export const add = (
   aj = 0,
   bi = 0,
   bj = 0,
-  n = A.length
+  n = A.length,
 ): Mut<number> => Mat.add(A, B, ai, aj, bi, bj, n, n);
 
 /** Θ(n^2) */
@@ -27,7 +27,7 @@ export const sub = (
   aj = 0,
   bi = 0,
   bj = 0,
-  n = A.length
+  n = A.length,
 ): Mut<number> => Mat.sub(A, B, ai, aj, bi, bj, n, n);
 
 export const merge = <T, U extends Mut<T>>(A: U, B: U, C: U, D: U): Mut<T> => Mat.merge(A, B, C, D);

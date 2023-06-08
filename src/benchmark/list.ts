@@ -1,9 +1,9 @@
-import { range } from "@/data/array";
-import { DoublyLinkedList } from "@/data/list/doubly";
-import { SinglyLinkedList } from "@/data//list/singly";
-import { bench } from "@/util";
+import { range } from "/data/array.ts";
+import { DoublyLinkedList } from "/data/list/doubly.ts";
+import { SinglyLinkedList } from "/data/list/singly.ts";
+import { bench } from "/util/mod.ts";
 
-for (const size of range(23 + 1).map(x => 2 ** x)) {
+for (const size of range(23 + 1).map((x) => 2 ** x)) {
   const A = range(size);
   const DL = DoublyLinkedList.fromArray<number>([...A]);
   const SL = SinglyLinkedList.fromArray<number>([...A]);

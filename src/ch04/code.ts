@@ -1,4 +1,4 @@
-import * as SMat from "@/data/matrix/square";
+import * as SMat from "/data/matrix/square.ts";
 
 /** Θ(n^2) */
 export const maxSubarrayBruteForce = (A: readonly number[]): [number, number, number] => {
@@ -21,7 +21,7 @@ export const maxSubarrayBruteForce = (A: readonly number[]): [number, number, nu
 export const maxSubarrayDaC = (
   A: readonly number[],
   low = 0,
-  high = A.length - 1
+  high = A.length - 1,
 ): [number, number, number] => {
   if (high < low) {
     return [-1, -1, 0];
@@ -55,7 +55,7 @@ const maxCrossingSubarray = (
   A: readonly number[],
   low: number,
   mid: number,
-  high: number
+  high: number,
 ): [number, number, number] => {
   let sum = 0;
 
@@ -140,7 +140,7 @@ export const sMatMulIjk = (
   aj = 0,
   bi = 0,
   bj = 0,
-  s = A.length
+  s = A.length,
 ): SMat.Mut<number> => {
   const C = SMat.create(s, 0);
 
@@ -163,7 +163,7 @@ export const sMatMulIkj = (
   aj = 0,
   bi = 0,
   bj = 0,
-  s = A.length
+  s = A.length,
 ): SMat.Mut<number> => {
   const C = SMat.create(s, 0);
 
@@ -187,7 +187,7 @@ export const sMatMulDaC = (
   aj = 0,
   bi = 0,
   bj = 0,
-  s = A.length
+  s = A.length,
 ): SMat.Mut<number> => {
   if (s === 1) {
     return SMat.create(1, A[ai][aj] * B[bi][bj]);
@@ -206,19 +206,19 @@ export const sMatMulDaC = (
 
   const C11 = SMat.add(
     sMatMulDaC(A, B, ai, aj, bi, bj, hs),
-    sMatMulDaC(A, B, ai, ajh, bih, bj, hs)
+    sMatMulDaC(A, B, ai, ajh, bih, bj, hs),
   );
   const C12 = SMat.add(
     sMatMulDaC(A, B, ai, aj, bi, bjh, hs),
-    sMatMulDaC(A, B, ai, ajh, bih, bjh, hs)
+    sMatMulDaC(A, B, ai, ajh, bih, bjh, hs),
   );
   const C21 = SMat.add(
     sMatMulDaC(A, B, aih, aj, bi, bj, hs),
-    sMatMulDaC(A, B, aih, ajh, bih, bj, hs)
+    sMatMulDaC(A, B, aih, ajh, bih, bj, hs),
   );
   const C22 = SMat.add(
     sMatMulDaC(A, B, aih, aj, bi, bjh, hs),
-    sMatMulDaC(A, B, aih, ajh, bih, bjh, hs)
+    sMatMulDaC(A, B, aih, ajh, bih, bjh, hs),
   );
 
   return SMat.merge(C11, C12, C21, C22);
@@ -232,7 +232,7 @@ export const strassen = (
   aj = 0,
   bi = 0,
   bj = 0,
-  s = A.length
+  s = A.length,
 ): SMat.Mut<number> => {
   if (s === 1) {
     return SMat.create(1, A[ai][aj] * B[bi][bj]);
