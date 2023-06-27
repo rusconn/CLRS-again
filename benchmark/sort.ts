@@ -13,7 +13,7 @@ import { heapSort } from "/ch06/code.ts";
 import { quickSort, randomizedQuickSort } from "/ch07/code.ts";
 import { bucketSort, countingSort } from "/ch08/code.ts";
 
-for (const size of range(16 + 1).map((x) => 2 ** x)) {
+for (const size of range(8, 16 + 1).map((x) => 2 ** x)) {
   const ints = randInts(size, 1, size);
 
   const intsForInsertion = [...ints];

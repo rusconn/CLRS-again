@@ -8,7 +8,7 @@ import {
   maxDiffSubarrayDaC,
 } from "/ch04/code.ts";
 
-for (const size of range(16 + 1).map((x) => 2 ** x)) {
+for (const size of range(10, 16 + 1).map((x) => 2 ** x)) {
   const A = randInts(size, 80, 120);
 
   const brute = () => maxDiffBruteForce(A);

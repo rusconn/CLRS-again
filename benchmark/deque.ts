@@ -4,7 +4,7 @@ import { DoublyLinkedListDeque } from "/data/deque/dlist.ts";
 import { SinglyLinkedListDeque } from "/data/deque/slist.ts";
 import { bench } from "/util/mod.ts";
 
-for (const size of range(17 + 1).map((x) => 2 ** x)) {
+for (const size of range(10, 17 + 1).map((x) => 2 ** x)) {
   const array = () => {
     const Q = new ArrayDeque<number>(size);
     for (let i = 0; i < size; i++) Q.pushHead(i);

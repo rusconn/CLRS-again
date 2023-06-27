@@ -8,7 +8,7 @@ type Node = {
   val: number;
 };
 
-for (const size of range(16 + 1).map((x) => 2 ** x)) {
+for (const size of range(5, 16 + 1).map((x) => 2 ** x)) {
   const nodes = randInts(size, 0, 100).map((int) => ({ key: int, val: int }));
 
   const binheap = () => {

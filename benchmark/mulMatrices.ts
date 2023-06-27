@@ -4,7 +4,7 @@ import { bench } from "/util/mod.ts";
 
 import { sMatMulDaC, sMatMulIjk, sMatMulIkj, strassen } from "/ch04/code.ts";
 
-for (const size of range(10 + 1).map((x) => 2 ** x)) {
+for (const size of range(5, 10 + 1).map((x) => 2 ** x)) {
   const A = SMat.createRand(size, -100, 100);
   const B = SMat.createRand(size, -100, 100);
 

@@ -12,7 +12,7 @@ type User = {
   name: string;
 };
 
-for (const size of range(16 + 1).map((x) => 2 ** x)) {
+for (const size of range(10, 16 + 1).map((x) => 2 ** x)) {
   const users = range(size).map((n) => ({ id: n, name: `user${n}` }));
 
   const biarray = () => {

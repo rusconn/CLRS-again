@@ -7,7 +7,7 @@ import { DoublyLinkedListQueue } from "/data/queue/dlist.ts";
 import { SinglyLinkedListQueue } from "/data/queue/slist.ts";
 import { bench } from "/util/mod.ts";
 
-for (const size of range(18 + 1).map((x) => 2 ** x)) {
+for (const size of range(10, 18 + 1).map((x) => 2 ** x)) {
   const binheap = () => {
     const Q = new BinaryHeapQueue<number>();
     for (let i = 0; i < size; i++) Q.enqueue(i);

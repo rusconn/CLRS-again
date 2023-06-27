@@ -8,7 +8,7 @@ import {
   rank,
 } from "/ch08/code.ts";
 
-for (const size of range(24 + 1).map((x) => 2 ** x)) {
+for (const size of range(10, 24 + 1).map((x) => 2 ** x)) {
   const A = randInts(size, 0, 10_000);
   const k = 10_000;
   const a = randInt(0, 5_000);

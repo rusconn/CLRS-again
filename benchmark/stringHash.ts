@@ -3,7 +3,7 @@ import { bench, randInt, randInts } from "/util/mod.ts";
 
 import { hornerHash, stringHash } from "/ch11/code.ts";
 
-for (const size of range(15 + 1).map((x) => 2 ** x)) {
+for (const size of range(5, 15 + 1).map((x) => 2 ** x)) {
   const a = "a".charCodeAt(0);
   const z = "z".charCodeAt(0);
 
