@@ -1,4 +1,5 @@
-import { assertEquals, assertNotEquals, describe, it } from "/deps.ts";
+import { assertEquals, assertNotEquals } from "std/testing/asserts";
+import { describe, it } from "std/testing/bdd";
 
 import { BuiltInArrayDict } from "./biarray.ts";
 import { BuiltInMapDict } from "./bimap.ts";

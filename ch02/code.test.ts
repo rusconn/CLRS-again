@@ -1,4 +1,5 @@
-import { assertEquals, describe, it } from "/deps.ts";
+import { assertEquals } from "std/testing/asserts";
+import { describe, it } from "std/testing/bdd";
 
 import {
   addBinary,

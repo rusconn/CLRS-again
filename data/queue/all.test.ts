@@ -1,4 +1,5 @@
-import { assert, assertEquals, describe, it } from "/deps.ts";
+import { assert, assertEquals } from "std/testing/asserts";
+import { describe, it } from "std/testing/bdd";
 
 import { BinaryHeapQueue } from "./binheap.ts";
 import { ArrayDequeQueue } from "./adeque.ts";

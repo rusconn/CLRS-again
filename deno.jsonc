@@ -7,8 +7,5 @@
     "exclude": ["**/*.md"],
     "lineWidth": 100
   },
-  "imports": {
-    "/": "./",
-    "./": "./"
-  }
+  "importMap": "./import_map.json"
 }

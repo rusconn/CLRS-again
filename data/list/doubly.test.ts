@@ -1,4 +1,5 @@
-import { assert, assertEquals, assertFalse, assertThrows, describe, it } from "/deps.ts";
+import { assert, assertEquals, assertFalse, assertThrows } from "std/testing/asserts";
+import { describe, it } from "std/testing/bdd";
 
 import { DoublyLinkedList } from "./doubly.ts";
 

@@ -1,4 +1,6 @@
-import { assert, assertEquals, assertFalse, assertThrows, describe, it } from "/deps.ts";
+import { assert, assertEquals, assertFalse, assertThrows } from "std/testing/asserts";
+import { describe, it } from "std/testing/bdd";
+
 import { ArrayDeque } from "./array.ts";
 import { DoublyLinkedListDeque } from "./dlist.ts";
 import { SinglyLinkedListDeque } from "./slist.ts";
